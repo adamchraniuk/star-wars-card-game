@@ -1,0 +1,16 @@
+@import "../../styles/variables";
+.btn {
+  background-color: $c-button;
+  padding: 5px 15px;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  color: $c-button-text;
+  font-weight: bold;
+  margin: 30px auto;
+  display: block;
+
+  &:hover {
+    background-color: darken($c-button, 5%);
+  }
+}

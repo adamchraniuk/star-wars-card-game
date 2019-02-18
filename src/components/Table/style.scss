@@ -1,0 +1,22 @@
+@import "../../styles/variables";
+
+.table {
+  &__header {
+    display: flex;
+    padding-bottom: 5px;
+    color: $c-button-text;
+    border-bottom: 1px solid $c-purple;
+  }
+
+  &__th, &__td {
+    width: 100%;
+  }
+
+  &__tr {
+    display: flex;
+    padding: 5px 0;
+    border-bottom: 1px solid $c-purple;
+  }
+
+  margin-bottom: 50px;
+}
