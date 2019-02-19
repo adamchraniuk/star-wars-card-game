@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
-import WelcomeInfo from '../../components/WelcomeInfo'
-import {APP_STATES, DETAILS_CONFIG} from "./config";
-import Table from '../../components/Table';
+import React, {Component} from 'react';
+import WelcomeInfo from '../../components/WelcomeInfo/withLogo'
+import {APP_STATES} from "./config";
 import Button from '../../components/Button';
+import './style.scss'
 
 class Details extends Component {
 
@@ -76,8 +76,8 @@ class Details extends Component {
             personDetails
         } = this.state;
         return (
-            <div className="details-page container">
-                <WelcomeInfo header='Person Details'/>
+            <div className="details-page background-full-screen">
+                <WelcomeInfo paragraph='Person Details'/>
                 {
                     appState === APP_STATES.LOADING &&
                     <p>Loading, please wait.</p>
@@ -90,16 +90,16 @@ class Details extends Component {
                 }
                 {
                     appState === APP_STATES.RESULTS &&
-                    <Fragment>
-                        <p>Name: {personDetails.name}</p>
-                        <p>Mass: {personDetails.mass}</p>
-                        <p>Height: {personDetails.height}</p>
-                        <p>Hair: {personDetails.hair_color}</p>
-                        <p>Skin: {personDetails.skin_color}</p>
-                        <p>Eyes: {personDetails.eye_color}</p>
+                    <div className='container'>
+                        <p className="person-detail">Name: {personDetails.name}</p>
+                        <p className="person-detail">Mass: {personDetails.mass}</p>
+                        <p className="person-detail">Height: {personDetails.height}</p>
+                        <p className="person-detail">Hair: {personDetails.hair_color}</p>
+                        <p className="person-detail">Skin: {personDetails.skin_color}</p>
+                        <p className="person-detail">Eyes: {personDetails.eye_color}</p>
                         <Button text="delete this person" action={this.removePerson}/>
-                        <button onClick={this.goBack}> Return</button>
-                    </Fragment>
+                        <button onClick={this.goBack} className="btn"> Return</button>
+                    </div>
                 }
             </div>
         )

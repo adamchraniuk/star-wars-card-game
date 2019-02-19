@@ -1,7 +1,8 @@
 @import "../../styles/variables";
+
 .btn {
-  background-color: $c-button;
-  padding: 5px 15px;
+  background-color: $c-yellow;
+  padding: 10px 30px;
   border: 0;
   border-radius: 5px;
   cursor: pointer;
@@ -9,8 +10,11 @@
   font-weight: bold;
   margin: 30px auto;
   display: block;
+  text-transform: uppercase;
+  transition: background-color .4s ease-in-out, color .4s linear;
 
   &:hover {
-    background-color: darken($c-button, 5%);
+    background-color: darken($c-yellow, 55%);
+    color: $c-white
   }
 }

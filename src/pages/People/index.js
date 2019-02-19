@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {APP_STATES, TABLE_CONFIG} from './config'
 import Button from '../../components/Button';
-import WelcomeInfo from '../../components/WelcomeInfo';
-import Table from "../../components/Table"
-import Footer from '../../components/Footer';
-
+import WelcomeInfo from '../../components/WelcomeInfo/withLogo';
+import Table from "../../components/Table";
+import './style.scss'
 class PeoplePage extends Component {
     state = {
         appState: APP_STATES.INIT,
@@ -43,9 +42,9 @@ class PeoplePage extends Component {
             people
         } = this.state;
         return (
-            <div>
+            <div className="background-full-screen">
                 <div className="container">
-                    <WelcomeInfo header="Star Wars" paragraph="long time ago"/>
+                    <WelcomeInfo paragraph="Long time ago ..."/>
                     {
                         appState === APP_STATES.INIT
                             ?
@@ -80,7 +79,6 @@ class PeoplePage extends Component {
 
                     }
                 </div>
-                <Footer/>
             </div>
         );
     }

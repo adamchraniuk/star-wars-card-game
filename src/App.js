@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import PeoplePage from './pages/People';
 import Page404 from './pages/Page404';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
-import PeopleDetailPage from './pages/People/details'
+import PeopleDetailPage from './pages/People/details';
+import WelcomePage from './pages/WelcomePage'
 class App extends Component {
 
     render() {
@@ -16,7 +17,7 @@ class App extends Component {
                     />
                     <Route
                         path="/"
-                        component={App}
+                        component={WelcomePage}
                         exact
                     />
                     <Route
