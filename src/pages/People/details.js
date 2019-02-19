@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import WelcomeInfo from '../../components/WelcomeInfo'
 import {APP_STATES, DETAILS_CONFIG} from "./config";
-import Table from '../../components/Table'
+import Table from '../../components/Table';
+import Button from '../../components/Button';
 
 class Details extends Component {
 
@@ -24,7 +25,7 @@ class Details extends Component {
             .then(response => {
                 if (response.ok) {
                     return response.json();
-                } else if (response.status === '404') {
+                } else if (response.status === 404) {
                     this.props.history.push('/404');
                 } else {
                     throw new Error('Error!');
@@ -44,6 +45,29 @@ class Details extends Component {
     };
     goBack = () => {
         this.props.history.push('/people');
+    };
+
+    removePerson = () => {
+        fetch('http://localhost:8000/people/' + this.state.personId, {
+            method: "DELETE"
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    this.props.history.push('/404');
+                } else {
+                    throw new Error('Error!');
+                }
+            })
+            .then(response => {
+                this.props.history.push('/')
+            })
+            .catch(error => {
+                this.setState({
+                    appState: APP_STATES.ERROR,
+                })
+            })
     };
 
     render() {
@@ -67,9 +91,13 @@ class Details extends Component {
                 {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
-                        <Table config={DETAILS_CONFIG}
-                               items={[personDetails]}
-                        />
+                        <p>Name: {personDetails.name}</p>
+                        <p>Mass: {personDetails.mass}</p>
+                        <p>Height: {personDetails.height}</p>
+                        <p>Hair: {personDetails.hair_color}</p>
+                        <p>Skin: {personDetails.skin_color}</p>
+                        <p>Eyes: {personDetails.eye_color}</p>
+                        <Button text="delete this person" action={this.removePerson}/>
                         <button onClick={this.goBack}> Return</button>
                     </Fragment>
                 }

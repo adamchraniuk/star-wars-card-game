@@ -30,6 +30,11 @@ class App extends Component {
                         exact
                     />
                     <Route
+                        path="/people/:id/edit"
+                        component={PeopleDetailPage}
+                        exact
+                    />
+                    <Route
                         component={Page404}
                         path="/404"
                         exact
