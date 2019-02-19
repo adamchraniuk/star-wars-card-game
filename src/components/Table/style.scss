@@ -8,6 +8,10 @@
     border-bottom: 1px solid $c-purple;
   }
 
+  &__th {
+    color: #00af00;
+  }
+
   &__th, &__td {
     width: 100%;
   }
@@ -16,6 +20,9 @@
     display: flex;
     padding: 5px 0;
     border-bottom: 1px solid $c-purple;
+    &:nth-child(2n) {
+        color: orange;
+    }
   }
 
   margin-bottom: 50px;

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom'
 
 const row = ({
                  item,
@@ -11,7 +12,16 @@ const row = ({
             config.map(configObj => (
                     <div className="table__td"
                          key={configObj.id}>
-                        {item[configObj.field]}
+                        {
+                            configObj.type === 'text'
+                                ?
+                                item[configObj.field]
+                                :
+                                (
+                                    <Link to={configObj.link + item.id}>{configObj.buttonText}</Link>
+                                )
+                        }
+
                     </div>
                 )
             )

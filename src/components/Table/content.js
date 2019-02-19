@@ -11,7 +11,8 @@ const content = ({
             items.map((item, index) => (
                     <Row item={item}
                          key={index}
-                         config={config}/>
+                         config={config}
+                         />
                 )
             )
         }

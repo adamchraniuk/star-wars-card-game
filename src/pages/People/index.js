@@ -16,7 +16,7 @@ class PeoplePage extends Component {
             appState: APP_STATES.LOADING
         });
 
-        fetch('http://localhost:3000/people')
+        fetch('http://localhost:8000/people')
             .then(response => {
                 if (response.ok) {
                     return response.json();
