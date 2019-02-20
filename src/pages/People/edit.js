@@ -2,20 +2,16 @@ import React, {Component} from 'react';
 import WelcomeInfo from '../../components/WelcomeInfo/withLogo'
 import {APP_STATES} from "./config";
 import Button from '../../components/Button';
-import {Link} from "react-router-dom";
+import AddEditForm from './addEditForm';
 import './style.scss'
 
-class Details extends Component {
+class Edit extends Component {
 
     state = {
         appState: APP_STATES.LOADING,
         personDetails: {},
         personId: this.props.match.params.id,
     };
-
-    componentDidMount() {
-        this.loadPerson();
-    }
 
     loadPerson = () => {
         this.setState({
@@ -44,13 +40,25 @@ class Details extends Component {
                 })
             })
     };
-    goBack = () => {
-        this.props.history.push('/people');
-    };
+    editPersonData = (newName, newHeight, newMass, newbirth_year) => {
+        this.setState({
+            appState: APP_STATES.LOADING
+        });
 
-    removePerson = () => {
+        const person = {
+            "name": newName,
+            "height": newHeight,
+            "mass": newMass,
+            "birth_year": newbirth_year
+        };
+
+
         fetch('http://localhost:8000/people/' + this.state.personId, {
-            method: "DELETE"
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(person),
         })
             .then(response => {
                 if (response.ok) {
@@ -62,7 +70,11 @@ class Details extends Component {
                 }
             })
             .then(response => {
-                this.props.history.push('/')
+
+                this.setState({
+                    appState: APP_STATES.RESULTS,
+                    // personDetails: person
+                })
             })
             .catch(error => {
                 this.setState({
@@ -71,44 +83,40 @@ class Details extends Component {
             })
     };
 
+    redirect = () => {
+        this.props.history.push('/people/' + this.state.personId)
+    };
+
+    componentDidMount() {
+        this.loadPerson()
+    }
+
     render() {
         const {
-            appState,
             personDetails,
-            personId
+            appState
         } = this.state;
         return (
-            <div className="details-page background-full-screen">
-                <WelcomeInfo paragraph='Person Details'/>
-                {
-                    appState === APP_STATES.LOADING &&
-                    <p>Loading, please wait.</p>
-                }
-                {
-                    appState === APP_STATES.ERROR &&
-                    <p>Error !
-                        <button onClick={this.goBack}> Return</button>
-                    </p>
-                }
-                {
-                    appState === APP_STATES.RESULTS &&
-                    <div className='container'>
-                        <p className="person-detail">Name: {personDetails.name}</p>
-                        <p className="person-detail">Mass: {personDetails.mass}</p>
-                        <p className="person-detail">Height: {personDetails.height}</p>
-                        <p className="person-detail">Birth year: {personDetails.birth_year}</p>
-                        <Link to={'/people/' + personId + '/edit'}
-                              className="btn edit-btn">
-                            Edit this person
-                        </Link>
-
-                        <Button text="delete this person" action={this.removePerson}/>
-                        <Button text="return" action={this.goBack} />
-                    </div>
-                }
+            <div className="background-full-screen">
+                <div className="container">
+                    <WelcomeInfo paragraph="Long time ago ..."/>
+                    {
+                        appState === APP_STATES.RESULTS &&
+                        <>
+                            <AddEditForm
+                                name={personDetails.name}
+                                height={personDetails.height}
+                                mass={personDetails.mass}
+                                birth_year={personDetails.birth_year}
+                                saveChanges={this.editPersonData}
+                            />
+                            <Button text='Return' action={this.redirect}/>
+                        </>
+                    }
+                </div>
             </div>
         )
     }
 }
 
-export default Details;
+export default Edit;

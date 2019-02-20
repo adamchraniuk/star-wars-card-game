@@ -4,3 +4,42 @@
   color: $c-white;
   font-size: 1.2rem;
 }
+
+.edit-btn {
+  width: fit-content;
+  margin: 30px auto;
+  text-decoration: none;
+  font-size: 1rem;
+}
+.c-white {
+  color: $c-white;
+}
+.edit-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    color: $c-white;
+    width: 50%;
+  }
+
+  input {
+    margin-top: 5px;
+    width: 100%;
+    height: 45px;
+    padding: 5px 15px;
+    border: 1px solid $c-yellow;
+    background: transparent;
+    color: $c-orange;
+    font-weight: bold;
+    margin-bottom: 15px;
+    transition: all .2s ease-in-out;
+
+    &:focus {
+      border-color: $c-orange;
+      outline: none;
+    }
+  }
+}

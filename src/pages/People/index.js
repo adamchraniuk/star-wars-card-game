@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {APP_STATES, TABLE_CONFIG} from './config'
-import Button from '../../components/Button';
 import WelcomeInfo from '../../components/WelcomeInfo/withLogo';
 import Table from "../../components/Table";
+import {Link} from "react-router-dom";
 import './style.scss'
+
 class PeoplePage extends Component {
     state = {
         appState: APP_STATES.INIT,
@@ -36,6 +37,10 @@ class PeoplePage extends Component {
             })
     };
 
+    componentDidMount() {
+        this.loadData();
+    }
+
     render() {
         const {
             appState,
@@ -46,16 +51,9 @@ class PeoplePage extends Component {
                 <div className="container">
                     <WelcomeInfo paragraph="Long time ago ..."/>
                     {
-                        appState === APP_STATES.INIT
-                            ?
-                            <Button className="btn" id="" text="Load people" action={this.loadData}/>
-                            :
-                            null
-                    }
-                    {
                         appState === APP_STATES.LOADING
                             ?
-                            <p> Loading ! </p>
+                            <p className="c-white"> Loading ! </p>
                             :
                             null
 
@@ -71,9 +69,14 @@ class PeoplePage extends Component {
                     {
                         appState === APP_STATES.RESULTS
                             ?
-                            <Table config={TABLE_CONFIG}
-                                   items={people}
-                            />
+                            <>
+                                <Table config={TABLE_CONFIG}
+                                       items={people}
+                                />
+                                <Link to="/people/add" className="btn edit-btn">
+                                    Add new person
+                                </Link>
+                            </>
                             :
                             null
 
