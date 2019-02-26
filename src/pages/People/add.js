@@ -56,7 +56,6 @@ class Add extends Component {
 
     render() {
         const {
-            personDetails,
             appState
         } = this.state;
         return (
@@ -67,10 +66,10 @@ class Add extends Component {
                         appState === APP_STATES.RESULTS &&
                         <>
                             <AddEditForm
-                                name={personDetails.name}
-                                height={personDetails.height}
-                                mass={personDetails.mass}
-                                birth_year={personDetails.birth_year}
+                                name=''
+                                height=''
+                                mass=''
+                                birth_year=''
                                 saveChanges={this.addPersonData}
                             />
                             <Button text='Return' action={this.redirect}/>

@@ -6,7 +6,7 @@ import PeopleDetailPage from './pages/People/details';
 import PeopleEditPage from './pages/People/edit';
 import PeopleAddPage from './pages/People/add';
 import WelcomePage from './pages/WelcomePage'
-
+import Game from './pages/Game';
 class App extends Component {
 
     render() {
@@ -41,6 +41,11 @@ class App extends Component {
                     <Route
                         path="/people/:id/edit"
                         component={PeopleEditPage}
+                        exact
+                    />
+                    <Route
+                        path="/game/"
+                        component={Game}
                         exact
                     />
 

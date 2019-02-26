@@ -171,6 +171,13 @@
         "https://swapi.co/api/starships/65/",
         "https://swapi.co/api/starships/74/"
       ]
+    },
+    {
+      "id": "d15da2b5-3546-424a-b19b-c82af30372f4",
+      "name": "C-3POasda",
+      "height": "123",
+      "mass": "75asd",
+      "birth_year": "1992"
     }
   ]
 }
