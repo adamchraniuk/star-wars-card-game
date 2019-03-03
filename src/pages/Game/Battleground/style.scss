@@ -1,0 +1,38 @@
+@import "../../../styles/variables";
+
+.battleground {
+  display: flex;
+  width: 100%;
+  margin: 30px auto;
+
+  .player, .opponent {
+    width: 45%;
+
+    .card {
+      width: 100%;
+      max-width: 50%;
+      margin: 0 auto;
+      animation: newCard .2s ease-in forwards;
+    }
+  }
+  .opponent {
+    .card__flip {
+      transform: none
+    }
+  }
+  .vs {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@keyframes newCard {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import Clash from '../../components/Clash';
+import Clash from './Clash';
 import {
     GAME_STATES,
     GAME_MODE_ARRAY,
@@ -8,7 +8,7 @@ import {
     OPPONENT_FRACTION,
     CHOOSEN_OPPONENT
 } from './config';
-import SelectCardToPlay from '../../components/SelectCardToPlay';
+import SelectCardToPlay from './SelectCardToPlay';
 import WelcomeInfo from "../../components/WelcomeInfo/withLogo";
 import Button from "../../components/Button";
 import SelectOpponent from "../../components/SelectOpponent";
@@ -49,7 +49,6 @@ class Game extends Component {
     };
     selectOpponent = (id) => {
         if (id === OPPONENT_FRACTION.SITH) {
-            console.log(OPPONENT_FRACTION.SITH, CHOOSEN_OPPONENT);
             CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.SITH;
         }
         if (id === OPPONENT_FRACTION.JEDI) {
