@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Button';
 import logo from "../../images/sw_logo.png"
 import Avatar from './avatar';
 import CardStats from './cardStats';
@@ -14,11 +13,21 @@ const card = ({
                   defence,
                   avatar,
                   cardEnable,
-                  isVisible
+                  isVisible,
+                  fraction,
+                  healthPower,
+                  cardValue,
               }) => (
     <Fragment>
         {cardEnable &&
-        <div className={'card ' + (isVisible ? 'selected' : '')} onClick={ () => selectTheCard(id)}>
+        <div className={'card ' +
+        (isVisible && 'selected ') +
+        (fraction === 'Jedi' ? 'light__side ' : '' ) +
+        (fraction === 'Sith' ? 'dark__side ' : '' ) +
+        (fraction === 'Rebels' ? 'rebels ' : '' ) +
+        (fraction === 'bounty_hunter' ? 'bounty__hunter ' : '')
+        }
+             onClick={ () => selectTheCard(id)}>
             <div className="card__flip">
                 <div className="card__flip--back">
                     <img className='logo' src={logo} title='star wars logo' alt="star wars logo"/>
@@ -30,7 +39,11 @@ const card = ({
                     <CardStats
                         attack={attack}
                         defence={defence}
-                        name={name}/>
+                        name={name}
+                        fraction={fraction}
+                        healthPower={healthPower}
+                        cardValue={cardValue}
+                    />
                 </div>
 
             </div>
@@ -47,6 +60,9 @@ card.propTypes = {
     avatar: PropTypes.string,
     cardEnable: PropTypes.bool,
     isVisible: PropTypes.bool,
+    cardValue: PropTypes.number.isRequired,
+    fraction: PropTypes.string.isRequired,
+    healthPower: PropTypes.number.isRequired
 };
 
 card.defaultProps = {

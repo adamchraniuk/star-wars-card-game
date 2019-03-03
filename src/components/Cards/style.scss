@@ -1,0 +1,25 @@
+@import "../../styles/variables";
+
+.card__boards {
+  margin-top: 50px;
+}
+
+.selectedCards {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  border: 2px solid $c-yellow;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  &.all__player__cards {
+    border: 2px solid $c-orange;
+    flex-wrap: wrap;
+  }
+}
+
+.pocket {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+}

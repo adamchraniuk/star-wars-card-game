@@ -5,8 +5,9 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import PeopleDetailPage from './pages/People/details';
 import PeopleEditPage from './pages/People/edit';
 import PeopleAddPage from './pages/People/add';
-import WelcomePage from './pages/WelcomePage'
-import Game from './pages/Game';
+import WelcomePage from './pages/WelcomePage';
+import GamePage from './pages/Game';
+
 class App extends Component {
 
     render() {
@@ -15,7 +16,7 @@ class App extends Component {
                 <Switch>
                     <Redirect
                         path="/"
-                        to="/people"
+                        to="/game"
                         exact
                     />
                     <Route
@@ -44,8 +45,8 @@ class App extends Component {
                         exact
                     />
                     <Route
-                        path="/game/"
-                        component={Game}
+                        path="/game"
+                        component={GamePage}
                         exact
                     />
 

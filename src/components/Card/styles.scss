@@ -5,21 +5,46 @@
   border-radius: 15px;
   border: 2px solid $c-orange;
   width: 100%;
-  max-width: 285px;
-  height: 100%;
+  max-width: calc(25% - 30px);
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 30px auto;
-  background: $c-black;
+  margin: 15px;
   box-sizing: border-box;
-  padding: 0 .5rem 1.2rem .5rem;
-  min-height: 280px;
+  padding: 1rem .5rem 1.2rem .5rem;
   position: relative;
+  transition: transform .2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.light__side {
+    background: url("../../images/light_card.jpg") no-repeat;
+  }
+
+  &.dark__side {
+    background: url("../../images/dark_side.jpg") no-repeat;
+  }
+
+  &.bounty__hunter {
+    background: url("../../images/BH.jpg") no-repeat;
+  }
+
+  &.rebels {
+    background: url("../../images/rebels.jpg") no-repeat;
+  }
+
+  &.light__side, &.dark__side, &.rebels, &.bounty__hunter {
+    background-size: cover;
+  }
 
   .logo {
     margin-top: 2rem;
+    width: 100%;
   }
 
   &__flip {
@@ -29,7 +54,8 @@
     transform-style: preserve-3d;
     transition: all .3s ease-in-out;
     perspective: 1000px;
-    min-height: 285px;
+    min-height: 530px;
+    transform: rotateY(180deg) translate3d(0, 0, 0);
 
     &--front, &--back {
       position: absolute;
@@ -37,7 +63,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: $c-black;
+
       backface-visibility: hidden;
       border-radius: 3px;
       overflow: hidden;
@@ -54,66 +80,41 @@
     }
   }
 
-  &.selected {
-    .card__flip {
-      transform: rotateY(180deg) translate3d(0, 0, 0);
-
-      &--back {
-        display: none;
-      }
-    }
-  }
-
   &__name {
     margin-top: 2rem;
     font-size: 2rem;
   }
 
-  &__attack {
-    font-size: 1.2rem
-  }
-
-  &__name, &__attack {
+  &__name, &__health {
     color: $c-yellow;
   }
+
+  p {
+    font-size: 1.2rem;
+    color: $c-white;
+  }
 }
 
-.opponent {
+
+.opponent__cards {
   .card {
-
-    .card__flip--front {
-      opacity: 0;
-    }
-
-    &.selected {
-      .card__flip--front {
-        opacity: 1;
-      }
-    }
-  }
-
-}
-
-.player-deck {
-
-  .card__flip {
-    transform: rotateY(180deg) translate3d(0, 0, 0);
-
-    &--back {
-      display: none;
+    &__flip {
+      transform: rotateY(0) translate3d(0, 0, 0);
+      min-height: 150px;
     }
   }
 }
-.dark-side {
-  .card__flip {
-    transform: rotateY(180deg) translate3d(0, 0, 0);
+
+.player__cards {
+  .card {
+    &__flip {
+     min-height: 150px;
+    }
   }
 }
 
 .avatar {
-  width: 75px;
-  height: 75px;
-  left: 0;
-  top: 0;
-  position: absolute;
+  width: 50%;
+  height: 150px;
+  object-fit: contain;
 }

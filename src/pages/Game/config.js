@@ -1,85 +1,51 @@
-import yoda from '../../images/avatars/yoda.png'
-
-export const APP_STATES = {
-    INIT: 0,
-    IN_GAME: 1,
-    END_GAME: 2
+export const GAME_STATES = {
+    START_GAME: 0,
+    SELECT_CARDS: 1,
+    SELECT_OPPONENT: 2,
+    SELECT_GAME_MODE: 3,
+    GAME_MODE_1: 4,
+    GAME_MODE_2: 5,
+    END_GAME: 6,
 };
 
-export const GAME_DECKS = {
-    playerDeck: [
-        {
-            name: "Yoda",
-            attack: 15,
-            defence: 100,
-            avatar: yoda,
-            id: '1',
-            cardEnable: true,
-        },
-        {
-            name: "Luke",
-            attack: 35,
-            defence: 50,
-            avatar: '',
-            id: '2',
-            cardEnable: true,
-        },
-        {
-            name: "Yoda3",
-            attack: 100,
-            avatar: '',
-            defence: 44,
-            id: '3',
-            cardEnable: true,
-        },
-
-    ],
-    opponentDeck: [
-        {
-            name: "Darth1",
-            avatar: '',
-            defence: 100,
-            attack: 11,
-            id: '1'
-        },
-        {
-            name: "Darth4",
-            avatar: '',
-            defence: 100,
-            attack: 42,
-            id: '2'
-        },
-        {
-            name: "Darth3",
-            avatar: '',
-            defence: 100,
-            attack: 33,
-            id: '3'
-        },
-        {
-            name: "Darth11",
-            defence: 100,
-            avatar: '',
-            attack: 11,
-            id: '4'
-        },
-        {
-            name: "Darth41",
-            avatar: '',
-            defence: 100,
-            attack: 41,
-            id: '5'
-        },
-        {
-            name: "Darth31",
-            avatar: '',
-            defence: 100,
-            attack: 31,
-            id: '6'
-        },
-    ],
+export const CHOOSEN_OPPONENT = {
+    CHOOSEN_OPPONENT: '0'
+};
+export const PLAYER_DECK = {
+    PLAYER_DECK: []
+};
+export const OPPONENT_FRACTION = {
+    SITH: '0',
+    JEDI: '1',
+    BOUNTY_HUNTERS: '2',
 };
 
-export const GAME_CONFIG = {
-    ROUND_LIMIT: 3,
+export const OPPONENT_FRACTION_ARRAY = [
+    {
+        id: '0',
+        name: 'SITH',
+    },
+    {
+        id: '1',
+        name: 'JEDI'
+    },
+    {
+        id: '2',
+        name: 'BOUNTY_HUNTERS'
+    }
+];
+
+export const GAME_MODE_ARRAY = [
+    {
+        id: '1',
+        name: "GAME_MODE_1"
+    },
+    {
+        id: '2',
+        name: "GAME_MODE_2"
+    }
+];
+export const GAME_MODE = {
+    GAME_MODE_1: '1',
+    GAME_MODE_2: '2'
 };

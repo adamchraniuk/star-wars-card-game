@@ -1,49 +1,12 @@
 @import "../../styles/variables";
 
-
-.game-board {
-  display: flex;
-  background-size: cover;
-  border-radius: 5px;
-  justify-content: space-around;
-  align-items: center;
-  border: 2px solid $c-orange;
-  min-height: 400px;
-  flex-wrap: wrap;
-  flex-direction: column;
-  @media all and (min-width: $breakpoint-xs) {
-    padding: 0;
-  }
-  @media all and (min-width: $breakpoint-md) {
-    flex-direction: row;
-  }
-
-  h1 {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-.dark-side, .light-side {
-  @media all and (max-width: $breakpoint-sm) {
-    width: 100%;
-  }
-  @media all and (min-width: $breakpoint-md) {
-    width: 30%;
-  }
-  width: 40%;
-}
-
-.player-deck {
+.game {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.button-space {
-  min-width: 160px;
-}
-
-.empty-div {
-  height: 400px;
+  min-height: 100vh;
+  background: url("../../images/game_background.jpg") no-repeat fixed;
+  background-size: 100% auto;
+  height: 100%;
+  text-align: center;
+  overflow: hidden;
+  
 }

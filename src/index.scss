@@ -1,4 +1,5 @@
-@import "styles/variables";
+@import "./styles/_variables.scss";
+
 body {
   margin: 0;
   padding: 0;
@@ -32,13 +33,25 @@ code {
   @media all and (min-width: $breakpoint-lg) {
     max-width: 1140px;
   }
+  @media screen and (min-width: $breakpoint-xlg) {
+    max-width: 1410px;
+  }
 
 }
-
 .background-full-screen {
   width: 100%;
   min-height: 100vh;
   background: url("./images/darth_vader.jpg") no-repeat;
   background-size: cover;
   height: 100%;
+}
+
+.color-white {
+  color: $c-white;
+}
+.color-yellow {
+  color: $c-yellow;
+}
+.color-orange {
+  color: $c-orange;
 }

@@ -1,199 +1,139 @@
 import React, {Component, Fragment} from 'react';
-import {APP_STATES, GAME_DECKS, GAME_CONFIG} from './config';
+import Clash from '../../components/Clash';
+import {
+    GAME_STATES,
+    GAME_MODE_ARRAY,
+    GAME_MODE,
+    OPPONENT_FRACTION_ARRAY,
+    OPPONENT_FRACTION,
+    CHOOSEN_OPPONENT
+} from './config';
+import SelectCardToPlay from '../../components/SelectCardToPlay';
 import WelcomeInfo from "../../components/WelcomeInfo/withLogo";
 import Button from "../../components/Button";
-import Card from "../../components/Card";
+import SelectOpponent from "../../components/SelectOpponent";
+import SelectGameMode from "../../components/SelectGameMode";
 import './style.scss';
 
 class Game extends Component {
     state = {
-        appState: APP_STATES.INIT,
-        round: 1,
-        cardFromOpponentDeck: 0,
-        selectedCard: 0,
-        roundPlayed: false,
-        actualPlayerDeck: [],
-        isVisible: false
+        gameState: GAME_STATES.START_GAME,
+        playerDeck: [],
+        playerWon: false,
     };
 
-    componentDidMount() {
-        this.setPlayerDeck();
-    }
 
-    selectTheCard = (id) => {
-
+    goToSelectCards = () => {
         this.setState({
-            selectedCard: id
+            gameState: GAME_STATES.SELECT_CARDS
         });
     };
-
-    changeState = () => {
-        const {
-            appState,
-            round,
-            isVisible
-        } = this.state;
-        if (appState === APP_STATES.INIT) {
-
-            this.setState({
-                appState: APP_STATES.IN_GAME,
-            })
-
-        } else if (appState === APP_STATES.IN_GAME) {
-
-            const cardFromOpponentDeck = Math.floor(Math.random() * GAME_DECKS.opponentDeck.length);
-
-            this.setState({
-                round: round + 1,
-                cardFromOpponentDeck: cardFromOpponentDeck,
-                selectedCard: 0,
-                roundPlayed: false,
-                isVisible: !isVisible
-            });
-
-            if (round === GAME_CONFIG.ROUND_LIMIT) {
-                this.setState({
-                    appState: APP_STATES.END_GAME,
-                    isVisible: false
-                });
-            }
-
-        } else {
-            this.setState({
-                appState: APP_STATES.INIT,
-                round: 1,
-            })
-        }
-    };
-
-    setPlayerDeck = () => {
+    checkPlayersDeck = (array) => {
         this.setState({
-            actualPlayerDeck: GAME_DECKS.playerDeck
+            playerDeck: array,
         })
     };
+    goToGameMode = (id) => {
 
-    playThisRound = () => {
-        let playerDeckArray = this.state.actualPlayerDeck;
-        const playerDeckArrayLength = GAME_DECKS.playerDeck.length;
-
-        for (let i = 0; i < playerDeckArrayLength; i++) {
-            if (playerDeckArray[i].id === this.state.selectedCard) {
-                playerDeckArray[i].cardEnable = false;
-            }
+        if (id === GAME_MODE.GAME_MODE_1) {
+            this.setState({
+                gameState: GAME_STATES.GAME_MODE_1
+            })
+        }
+        if (id === GAME_MODE.GAME_MODE_2) {
+            this.setState({
+                gameState: GAME_STATES.GAME_MODE_2
+            })
         }
 
-        if (this.state.round === GAME_CONFIG.ROUND_LIMIT) {
-            for (let i = 0; i < playerDeckArrayLength; i++) {
-                playerDeckArray[i].cardEnable = true;
-            }
+    };
+    selectOpponent = (id) => {
+        if (id === OPPONENT_FRACTION.SITH) {
+            console.log(OPPONENT_FRACTION.SITH, CHOOSEN_OPPONENT);
+            CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.SITH;
+        }
+        if (id === OPPONENT_FRACTION.JEDI) {
+            CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.JEDI;
+        }
+        if (id === OPPONENT_FRACTION.BOUNTY_HUNTERS) {
+            CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.BOUNTY_HUNTERS;
         }
         this.setState({
-            roundPlayed: true,
-            isVisible: !this.state.isVisible,
-            actualPlayerDeck: playerDeckArray
+            gameState: GAME_STATES.SELECT_GAME_MODE,
         });
+
     };
 
+
+    goToSelectOpponent = () => {
+        const playerDeckLength = this.state.playerDeck.length;
+        if (playerDeckLength >= 5) {
+            this.setState({
+                gameState: GAME_STATES.SELECT_OPPONENT,
+            })
+        } else {
+            alert("You must selected five cards")
+        }
+    };
+
+
     render() {
-
-        const {
-            appState,
-            round,
-            cardFromOpponentDeck,
-            selectedCard,
-            roundPlayed,
-            actualPlayerDeck,
-            isVisible
-        } = this.state;
-
-        const {
-            playerDeck,
-            opponentDeck
-        } = GAME_DECKS;
-
+        const {gameState} = this.state;
         return (
-            <div className="details-page background-full-screen">
-                <WelcomeInfo paragraph='Person Details'/>
-                {
-                    appState === APP_STATES.INIT &&
-                    <Button text="Start game !"
-                            action={this.changeState}/>
-                }
-                {
-                    appState === APP_STATES.IN_GAME &&
-                    <Fragment>
-                        <div className="container game-board in-game">
-                            <h1 className="c-white">
-                                Round: {round}
-                            </h1>
-                            <div className="dark-side player-active-card">
-                                {playerDeck.map(card => (
-                                    selectedCard === card.id &&
-                                    <Card key={card.id}
-                                          attack={card.attack}
-                                          defence={card.defence}
-                                          name={card.name}
-                                          avatar={card.avatar}
-                                          id={card.id}
-                                          isVisible={isVisible}
-                                    />
-                                ))}
-                            </div>
-                            <div className="button-space">
-                                {selectedCard !== 0 &&
-                                <Fragment>
-                                    {!roundPlayed ?
-                                        <Button text={`Play this round!`}
-                                                action={this.playThisRound}/>
-                                        :
-                                        round !== GAME_CONFIG.ROUND_LIMIT ?
-                                            <Button text={`Go to next round.`}
-                                                    action={this.changeState}/>
-                                            :
-                                            <Button text={`Finish game.`}
-                                                    action={this.changeState}/>
-                                    }
-                                </Fragment>
-                                }
-                            </div>
-                            <div className="light-side opponent">
-                                <Card attack={opponentDeck[cardFromOpponentDeck].attack}
-                                      defence={opponentDeck[cardFromOpponentDeck].defence}
-                                      name={opponentDeck[cardFromOpponentDeck].name}
-                                      avatar={opponentDeck[cardFromOpponentDeck].avatar}
-                                      isVisible={isVisible}/>
-                            </div>
-                        </div>
-                        {!roundPlayed ?
-                            <div className="player-deck container">
-                                {actualPlayerDeck.map((card, index) => (
-                                    index < GAME_CONFIG.ROUND_LIMIT &&
-                                    <Card key={card.id}
-                                          attack={card.attack}
-                                          defence={card.defence}
-                                          name={card.name}
-                                          id={card.id}
-                                          avatar={card.avatar}
-                                          cardEnable={card.cardEnable}
-                                          selectTheCard={this.selectTheCard}/>
-                                ))}
-                            </div>
-                            : <div className="empty-div">
-                            </div>}
-                    </Fragment>
-                }
-                {
-                    appState === APP_STATES.END_GAME &&
-                    <Fragment>
-                        <div className="container game-board">
-                            <h1 className="c-white">Game finished !</h1>
-                            <Button text="Restart game"
-                                    action={this.changeState}/>
-                        </div>
-                        <div className="empty-div">
-                        </div>
-                    </Fragment>
-                }
+            <div className="game">
+                <div className="container">
+                    <header>
+                        <WelcomeInfo paragraph='Card game'/>
+                    </header>
+                    {
+                        gameState === GAME_STATES.START_GAME &&
+                        <Button action={this.goToSelectCards} text='Start Game!'/>
+
+                    }
+                    {
+                        gameState === GAME_STATES.SELECT_CARDS &&
+                        <Fragment>
+                            <Button
+                                text="play"
+                                action={this.goToSelectOpponent}
+                            />
+                            <SelectCardToPlay
+                                checkPlayersDeck={this.checkPlayersDeck}
+                                playerName='Adam'
+                            />
+                        </Fragment>
+                    }
+                    {
+                        gameState === GAME_STATES.SELECT_OPPONENT &&
+                        <SelectOpponent
+                            config={OPPONENT_FRACTION_ARRAY}
+                            selectOpponent={this.selectOpponent}
+                        />
+                    }
+                    {
+                        gameState === GAME_STATES.SELECT_GAME_MODE &&
+                        <SelectGameMode config={GAME_MODE_ARRAY}
+                                        selectGameModeFunc={this.goToGameMode}
+                        />
+                    }
+                    {
+                        gameState === GAME_STATES.GAME_MODE_1 &&
+                        <Clash
+                            game="game1"
+                        />
+                    }
+                    {
+                        gameState === GAME_STATES.GAME_MODE_2 &&
+                        <Clash
+                            game="game2"
+                        />
+                    }
+                    {
+                        gameState === GAME_STATES.END_GAME &&
+                        <h1 className="color-white">{this.state.playerWon ? 'Player' : 'Opponent'} is the winner!</h1>
+                    }
+
+                </div>
             </div>
         )
     }
