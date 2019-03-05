@@ -3,7 +3,6 @@ import {APP_STATES} from "../../People/config";
 import {PLAYER_DECK} from "../config";
 import Cards from "../../../components/Cards/bigCards";
 import Button from '../../../components/Button';
-
 import './style.scss';
 
 class SelectCardToPlay extends Component {
@@ -25,12 +24,10 @@ class SelectCardToPlay extends Component {
         })
     };
 
-
     loadData = () => {
         this.setState({
             appState: APP_STATES.LOADING
         });
-
         fetch('http://localhost:8000/AllCards')
             .then(response => {
                 if (response.ok) {
@@ -72,7 +69,6 @@ class SelectCardToPlay extends Component {
                     appState: APP_STATES.ERROR,
                 })
             });
-
     };
 
     savePlayerDeck = () => {
@@ -137,11 +133,8 @@ class SelectCardToPlay extends Component {
                 }
             }
         }
-
         selectedCardsArray.sort((a, b) => b.cardValue - a.cardValue);
         selectedDeck.sort((a, b) => b.cardValue - a.cardValue);
-
-
     };
 
     removeCard = (cardID) => {
@@ -170,7 +163,13 @@ class SelectCardToPlay extends Component {
 
     render() {
 
-        const {appState, playerDeck, selectedDeck, pocket, playerActive, otherActive} = this.state;
+        const {
+            appState,
+            playerDeck,
+            selectedDeck,
+            pocket,
+            playerActive,
+            otherActive} = this.state;
         return (
             <Fragment>
                 {

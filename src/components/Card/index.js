@@ -45,7 +45,6 @@ const card = ({
                         cardValue={cardValue}
                     />
                 </div>
-
             </div>
         </div>
         }

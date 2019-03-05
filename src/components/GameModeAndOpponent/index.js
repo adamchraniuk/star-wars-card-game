@@ -13,9 +13,7 @@ const GameModeAndOpponent = ({
             id={gameMode.id}
             action={() => action(gameMode.id)}
         />
-
     ))
-
 );
 
 export default GameModeAndOpponent;

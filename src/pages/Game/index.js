@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Clash from './Clash';
+import Clash2 from './Clash2';
 import {
     GAME_STATES,
     GAME_MODE_ARRAY,
@@ -18,7 +19,7 @@ class Game extends Component {
     state = {
         gameState: GAME_STATES.START_GAME,
         playerDeck: [],
-        playerWon: false,
+        playerWon: " ",
     };
 
     goToSelectCards = () => {
@@ -84,8 +85,17 @@ class Game extends Component {
         })
     };
 
+    whoWon = (playerWon) =>{
+        this.setState({
+            playerWon
+        })
+    };
+
     render() {
-        const {gameState} = this.state;
+        const {
+            gameState,
+            playerWon
+        } = this.state;
         return (
             <div className="game">
                 <div className="container">
@@ -127,8 +137,9 @@ class Game extends Component {
                             <h2 className="c-white">
                                 Select game mode
                             </h2>
-                            <GameModeAndOpponent config={GAME_MODE_ARRAY}
-                                                 action={this.goToGameMode}
+                            <GameModeAndOpponent
+                                config={GAME_MODE_ARRAY}
+                                action={this.goToGameMode}
                             />
                         </Fragment>
                     }
@@ -137,25 +148,26 @@ class Game extends Component {
                         <Clash
                             game="game1"
                             goToShowResult={this.goToShowResult}
+                            whoWon={this.whoWon}
                         />
                     }
                     {
                         gameState === GAME_STATES.GAME_MODE_2 &&
-                        <Clash
+                        <Clash2
                             game="game2"
+                            goToShowResult={this.goToShowResult}
+                            whoWon={this.whoWon}
                         />
                     }
                     {
                         gameState === GAME_STATES.END_GAME &&
                         <Fragment>
 
-                            <h1 className="color-yellow">{this.state.playerWon ? 'Player' : 'Opponent'} is the
-                                winner!</h1>
+                            <h1 className="color-yellow">{playerWon}</h1>
                             <Button text='Play again'
                                     action={this.playAgain}/>
                         </Fragment>
                     }
-
                 </div>
             </div>
         )

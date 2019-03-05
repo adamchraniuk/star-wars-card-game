@@ -56,7 +56,6 @@ const SelectedCards = ({
                                 cardValue={cardValue}
                                 fraction={fraction}
                                 healthPower={healthPower}
-
                             />
                         )
                     }
@@ -68,7 +67,6 @@ const SelectedCards = ({
                 Pocket: {pocket}<span>$</span></h1> : null}
         </div>
     </div>
-
 );
 
 SelectedCards.propTypes = {

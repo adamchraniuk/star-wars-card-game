@@ -11,9 +11,11 @@ export const GAME_STATES = {
 export const CHOOSEN_OPPONENT = {
     CHOOSEN_OPPONENT: '0'
 };
+
 export const PLAYER_DECK = {
     PLAYER_DECK: []
 };
+
 export const OPPONENT_FRACTION = {
     SITH: '0',
     JEDI: '1',
@@ -42,9 +44,10 @@ export const GAME_MODE_ARRAY = [
     },
     {
         id: '2',
-        name: "OTHER"
+        name: "HEROIC BATTLE"
     }
 ];
+
 export const GAME_MODE = {
     GAME_MODE_1: '1',
     GAME_MODE_2: '2'

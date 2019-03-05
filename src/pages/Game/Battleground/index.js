@@ -77,7 +77,6 @@ const battleground = ({
             }
         </div>
     </div>
-
 );
 
 

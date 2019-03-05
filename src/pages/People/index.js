@@ -56,7 +56,6 @@ class PeoplePage extends Component {
                             <p className="c-white"> Loading ! </p>
                             :
                             null
-
                     }
                     {
                         appState === APP_STATES.ERROR
@@ -64,7 +63,6 @@ class PeoplePage extends Component {
                             <p> Error ! Try again later</p>
                             :
                             null
-
                     }
                     {
                         appState === APP_STATES.RESULTS
@@ -79,7 +77,6 @@ class PeoplePage extends Component {
                             </>
                             :
                             null
-
                     }
                 </div>
             </div>

@@ -29,14 +29,23 @@
 
   &.dark__side {
     background: url("../../images/dark_side.jpg") no-repeat;
+    .card__fraction {
+      color: red;
+    }
   }
 
   &.bounty__hunter {
     background: url("../../images/BH.jpg") no-repeat;
+    .card__fraction {
+      color: gold;
+    }
   }
 
   &.rebels {
     background: url("../../images/rebels.jpg") no-repeat;
+    .card__fraction {
+      color: blue;
+    }
   }
 
   &.light__side, &.dark__side, &.rebels, &.bounty__hunter {

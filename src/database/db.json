@@ -104,7 +104,7 @@
   "Jedi": [
     {
       "id": "11",
-      "name": "Grand Master Yoda",
+      "name": "Yoda",
       "fraction": "Jedi",
       "attack": 46,
       "defence": 15,
@@ -360,7 +360,7 @@
     },
     {
       "id": "11",
-      "name": "Grand Master Yoda",
+      "name": "Yoda",
       "fraction": "Jedi",
       "attack": 46,
       "defence": 15,
@@ -514,32 +514,12 @@
       "deck": [
         {
           "id": "11",
-          "name": "Grand Master Yoda",
+          "name": "Yoda",
           "fraction": "Jedi",
           "attack": 46,
           "defence": 15,
           "healthPower": 35,
           "avatar": "https://vignette.wikia.nocookie.net/gwiezdnewojnyjedi/images/c/c3/Yoda_TPM_RotS.png/revision/latest?cb=20150614102122&path-prefix=pl",
-          "cardValue": 10
-        },
-        {
-          "id": "23",
-          "name": "Cad Bane",
-          "fraction": "bounty_hunter",
-          "attack": 31,
-          "defence": 19,
-          "healthPower": 33,
-          "avatar": "https://vignette.wikia.nocookie.net/neoencyclopedia/images/4/4d/Cad_Bane_TCW.png/revision/latest?cb=20140112112456",
-          "cardValue": 10
-        },
-        {
-          "id": "18",
-          "name": "Darth Revan",
-          "fraction": "Sith",
-          "attack": 44,
-          "defence": 29,
-          "healthPower": 38,
-          "avatar": "https://vignette.wikia.nocookie.net/deathbattlefanon/images/9/9f/Revan.png/revision/latest?cb=20180612195326",
           "cardValue": 10
         },
         {
@@ -560,6 +540,26 @@
           "defence": 31,
           "healthPower": 22,
           "avatar": "https://vignette.wikia.nocookie.net/vsbattles/images/d/dc/Felicity-jones-as-jyn-erso-the-characters-of-rogue-one-a-star-wars-story-cut-out-no-background-hd-hi-res.png/revision/latest?cb=20170213182728",
+          "cardValue": 10
+        },
+        {
+          "id": "14",
+          "name": "Anakin Skywalker",
+          "fraction": "Jedi",
+          "attack": 42,
+          "defence": 20,
+          "healthPower": 34,
+          "avatar": "https://vignette.wikia.nocookie.net/one-minute-meelee-fanon/images/7/76/Anakin_%282%29.png/revision/latest?cb=20181231121934",
+          "cardValue": 10
+        },
+        {
+          "id": "21",
+          "name": "Boba Fett",
+          "fraction": "bounty_hunter",
+          "attack": 33,
+          "defence": 32,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/disney/images/f/f4/Boba_Fett3.png/revision/latest?cb=20170301145056&path-prefix=pl",
           "cardValue": 10
         }
       ],
