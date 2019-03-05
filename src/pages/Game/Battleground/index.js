@@ -5,11 +5,14 @@ import './style.scss';
 
 const battleground = ({
                           playerCard,
-                          opponentCard
+                          opponentCard,
+                          temporaryChoosenCard,
+                          temporaryOpponentCard,
+                          isVisible,
                       }) => (
     <div className={"battleground"}>
         <div className='player'>
-            {playerCard.name &&
+            {playerCard.name ?
             <Card
                 name={playerCard.name}
                 attack={playerCard.attack}
@@ -22,6 +25,19 @@ const battleground = ({
                 healthPower={playerCard.healthPower}
                 key={playerCard.id}
             />
+            :
+                <Card
+                    name={temporaryChoosenCard.name}
+                    attack={temporaryChoosenCard.attack}
+                    defence={temporaryChoosenCard.defence}
+                    selectTheCard={temporaryChoosenCard.action}
+                    id={temporaryChoosenCard.id}
+                    avatar={temporaryChoosenCard.avatar}
+                    cardValue={temporaryChoosenCard.cardValue}
+                    fraction={temporaryChoosenCard.fraction}
+                    healthPower={temporaryChoosenCard.healthPower}
+                    key={temporaryChoosenCard.id}
+                />
             }
         </div>
         <div className="vs">
@@ -30,7 +46,7 @@ const battleground = ({
             </h1>
         </div>
         <div className='opponent'>
-            {opponentCard &&
+            {opponentCard.name?
             <Card
                 name={opponentCard.name}
                 attack={opponentCard.attack}
@@ -42,7 +58,22 @@ const battleground = ({
                 fraction={opponentCard.fraction}
                 healthPower={opponentCard.healthPower}
                 key={opponentCard.id}
+                isVisible={false}
             />
+            :
+                <Card
+                    name={temporaryOpponentCard.name}
+                    attack={temporaryOpponentCard.attack}
+                    defence={temporaryOpponentCard.defence}
+                    selectTheCard={temporaryOpponentCard.action}
+                    id={temporaryOpponentCard.id}
+                    avatar={temporaryOpponentCard.avatar}
+                    cardValue={temporaryOpponentCard.cardValue}
+                    fraction={temporaryOpponentCard.fraction}
+                    healthPower={temporaryOpponentCard.healthPower}
+                    key={temporaryOpponentCard.id}
+                    isVisible={isVisible}
+                />
             }
         </div>
     </div>

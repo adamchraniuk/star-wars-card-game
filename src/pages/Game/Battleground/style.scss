@@ -1,5 +1,11 @@
 @import "../../../styles/variables";
 
+.opponent__cards {
+  button {
+    display: none;
+  }
+}
+
 .battleground {
   display: flex;
   width: 100%;
@@ -15,17 +21,33 @@
       animation: newCard .2s ease-in forwards;
     }
   }
+
   .opponent {
+    .selected {
+      .card__flip {
+        transform: rotateY(180deg) translate3d(0, 0, 0);
+      }
+    }
+
     .card__flip {
       transform: none
     }
   }
+
   .vs {
     width: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+}
+
+.clash {
+  position: relative;
+}
+
+#playRound {
+
 }
 
 @keyframes newCard {
@@ -35,4 +57,22 @@
   to {
     opacity: 1;
   }
+}
+.clash {
+  position: relative;
+}
+.player-points, .opponent-points {
+  display: block;
+  position: absolute;
+  top: 50%;
+  font-size: 60px;
+  color: $c-yellow;
+}
+
+.player-points {
+  left: 0;
+}
+
+.opponent-points {
+  right: 0;
 }

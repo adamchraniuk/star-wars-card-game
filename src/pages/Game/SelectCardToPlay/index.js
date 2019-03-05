@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import {APP_STATES} from "../../People/config";
 import {PLAYER_DECK} from "../config";
-import Cards from "../../../components/Cards";
+import Cards from "../../../components/Cards/bigCards";
 import Button from '../../../components/Button';
+
 import './style.scss';
 
 class SelectCardToPlay extends Component {
@@ -11,18 +12,16 @@ class SelectCardToPlay extends Component {
         playerDeck: [],
         selectedDeck: [],
         pocket: 50,
-        appState: APP_STATES.INIT
+        appState: APP_STATES.INIT,
+        playerActive: 0,
+        otherActive: 0
     };
 
     componentDidMount() {
         this.loadData();
-        let playerDeck = this.state.playerDeck;
-        let selectedDeck = this.state.selectedDeck;
-        playerDeck.sort((a, b) => b.cardValue - a.cardValue);
-        selectedDeck.sort((a, b) => b.cardValue - a.cardValue);
         this.setState({
-            playerDeck,
-            selectedDeck,
+            playerDeck: this.state.playerDeck.sort((a, b) => b.cardValue - a.cardValue),
+            selectedDeck:this.state.selectedDeck.sort((a, b) => b.cardValue - a.cardValue),
         })
     };
 
@@ -96,7 +95,7 @@ class SelectCardToPlay extends Component {
                     throw new Error('Error!');
                 }
             })
-            .then( () => {
+            .then(() => {
                 alert('Your deck has been saved.')
             })
             .catch(error => {
@@ -118,9 +117,19 @@ class SelectCardToPlay extends Component {
                 const selectedCard = selectedCardsArray[i];
                 if (pocket >= selectedCard.cardValue) {
                     cardValue = selectedCard.cardValue;
-                    selectedDeck.push(selectedCard);
+                    const checkForDuplicateOfCards = selectedDeck.find((element, index) => {
+                        return selectedDeck[index].id === selectedCard.id
+                    });
+                    if (checkForDuplicateOfCards === undefined) {
+                        selectedDeck.push(selectedCard);
+                        this.setState({
+                            selectedDeck: selectedDeck,
+                            pocket: pocket - cardValue,
+                        });
+                    } else {
+                        alert('You have this card already')
+                    }
                     break;
-
                 } else {
                     alert("You don't have enough money");
                     selectedCardsArray.push(selectedCard);
@@ -128,12 +137,11 @@ class SelectCardToPlay extends Component {
                 }
             }
         }
+
         selectedCardsArray.sort((a, b) => b.cardValue - a.cardValue);
         selectedDeck.sort((a, b) => b.cardValue - a.cardValue);
-        this.setState({
-            selectedDeck,
-            pocket: pocket - cardValue,
-        })
+
+
     };
 
     removeCard = (cardID) => {
@@ -161,7 +169,8 @@ class SelectCardToPlay extends Component {
 
 
     render() {
-        const {appState, playerDeck, selectedDeck, pocket} = this.state;
+
+        const {appState, playerDeck, selectedDeck, pocket, playerActive, otherActive} = this.state;
         return (
             <Fragment>
                 {
@@ -177,19 +186,22 @@ class SelectCardToPlay extends Component {
                         </h1>
                         <div className="card__boards"
                              onClick={() => this.props.checkPlayersDeck(selectedDeck)}>
-                            <h2 className="color-yellow">Your chosen cards</h2>
+                            <h2 className="color-yellow">
+                                Your current deck</h2>
+
                             <Cards
                                 deck={selectedDeck}
                                 action={this.removeCard}
                                 nameClass="selected__cards"
                                 pocket={pocket}
+                                active={playerActive}
                             />
-
-                            <h2 className='color-orange'>Pick your cards</h2>
+                            <h2 className='color-orange'>Buy a new card</h2>
                             <Cards
                                 deck={playerDeck}
                                 action={this.selectCard}
                                 nameClass="all__player__cards"
+                                active={otherActive}
                             />
                         </div>
                     </Fragment>

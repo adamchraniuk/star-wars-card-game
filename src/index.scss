@@ -1,20 +1,31 @@
 @import "./styles/_variables.scss";
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+@font-face {
+  font-family: star-wars-jedi;
+  src: url("./fonts/Starjedi.ttf");
+}
+
+@font-face {
+  font-family: star-wars-hol;
+  src: url("./fonts/Starjhol.ttf");
+}
+
+@font-face {
+  font-family: tie-wind;
+  src: url("./fonts/TIE-Wing.ttf");
+}
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
 .container {
   padding: 0 10px;
   margin: 0 auto;
@@ -38,6 +49,7 @@ code {
   }
 
 }
+
 .background-full-screen {
   width: 100%;
   min-height: 100vh;
@@ -49,9 +61,11 @@ code {
 .color-white {
   color: $c-white;
 }
+
 .color-yellow {
   color: $c-yellow;
 }
+
 .color-orange {
   color: $c-orange;
 }

@@ -38,11 +38,11 @@ export const OPPONENT_FRACTION_ARRAY = [
 export const GAME_MODE_ARRAY = [
     {
         id: '1',
-        name: "GAME_MODE_1"
+        name: "BATTLE"
     },
     {
         id: '2',
-        name: "GAME_MODE_2"
+        name: "OTHER"
     }
 ];
 export const GAME_MODE = {

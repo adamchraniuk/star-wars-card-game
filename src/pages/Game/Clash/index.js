@@ -1,8 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import {OPPONENT_FRACTION, CHOOSEN_OPPONENT, GAME_STATES, PLAYER_DECK} from "../config";
+import {
+    OPPONENT_FRACTION,
+    CHOOSEN_OPPONENT,
+    PLAYER_DECK
+} from "../config";
 import {APP_STATES} from "../../People/config";
 import Cards from "../../../components/Cards";
 import Battleground from '../Battleground';
+import Button from "../../../components/Button";
 
 
 class Clash extends Component {
@@ -11,7 +16,13 @@ class Clash extends Component {
         opponentDeck: [],
         playerDeck: [],
         choosenCard: {},
-        opponentCard: {}
+        opponentCard: {},
+        temporaryChoosenCard: {},
+        temporaryOpponentCard: {},
+        playerPoints: 0,
+        opponentPoints: 0,
+        roundCounter: 0,
+        isVisible: false,
     };
 
     componentDidMount() {
@@ -21,7 +32,8 @@ class Clash extends Component {
 
     setPlayerDeck = () => {
         this.setState({
-            playerDeck: PLAYER_DECK.PLAYER_DECK
+            playerDeck: PLAYER_DECK.PLAYER_DECK,
+            temporaryChoosenCard: PLAYER_DECK.PLAYER_DECK[0],
         })
     };
 
@@ -31,10 +43,51 @@ class Clash extends Component {
         for (let i = 0; i < playerDeckLength; i++) {
             if (id === playerDeck[i].id) {
                 this.setState({
-                    choosenCard: playerDeck[i]
+                    choosenCard: playerDeck[i],
+                    isVisible: false,
                 })
             }
         }
+    };
+
+    playRound = () => {
+        const choosenCard = this.state.choosenCard;
+        if (!choosenCard.name) {
+            alert("Choose card");
+            return;
+        }
+        let opponentCard = this.state.opponentCard;
+        let playerDeck = this.state.playerDeck;
+        const opponentDeck = this.state.opponentDeck;
+        const index = Math.floor(Math.random() * opponentDeck.length);
+        opponentCard = opponentDeck[index];
+        opponentDeck.splice(index, 1);
+        playerDeck = playerDeck.filter(card => card.id !== choosenCard.id);
+        if (choosenCard.attack - opponentCard.defence > opponentCard.attack - choosenCard.defence) {
+            this.setState({
+                playerPoints: this.state.playerPoints + 1,
+            })
+        } else if (choosenCard.attack - opponentCard.defence < opponentCard.attack - choosenCard.defence) {
+            this.setState({
+                opponentPoints: this.state.opponentPoints + 1,
+            })
+        } else {
+            this.setState({
+                playerPoints: this.state.playerPoints,
+                opponentPoints: this.state.opponentPoints,
+            })
+        }
+        this.setState({
+            roundCounter: this.state.roundCounter + 1,
+            playerDeck,
+            opponentDeck,
+            isVisible: true,
+            opponentCard: {},
+            choosenCard: {},
+            temporaryOpponentCard: opponentCard,
+            temporaryChoosenCard: choosenCard,
+        })
+
     };
 
     getOpponent = () => {
@@ -56,7 +109,8 @@ class Clash extends Component {
                 .then(response => {
                     this.setState({
                         appState: APP_STATES.RESULTS,
-                        opponentDeck: response
+                        opponentDeck: response,
+                        temporaryOpponentCard: response[0],
                     })
                 })
                 .catch(error => {
@@ -80,7 +134,8 @@ class Clash extends Component {
                 .then(response => {
                     this.setState({
                         appState: APP_STATES.RESULTS,
-                        opponentDeck: response
+                        opponentDeck: response,
+                        temporaryOpponentCard: response[0],
                     })
                 })
                 .catch(error => {
@@ -104,7 +159,8 @@ class Clash extends Component {
                 .then(response => {
                     this.setState({
                         appState: APP_STATES.RESULTS,
-                        opponentDeck: response
+                        opponentDeck: response,
+                        temporaryOpponentCard: response[0],
                     })
                 })
                 .catch(error => {
@@ -121,10 +177,17 @@ class Clash extends Component {
             playerDeck,
             opponentDeck,
             choosenCard,
-            opponentCard
+            opponentCard,
+            temporaryChoosenCard,
+            temporaryOpponentCard,
+            playerPoints,
+            opponentPoints,
+            roundCounter,
+            isVisible,
         } = this.state;
+
         return (
-            <div>
+            <div className="clash">
                 {
                     appState === APP_STATES.LOADING &&
                     <h1 className="color-white">Loading. Please wait.</h1>
@@ -140,14 +203,38 @@ class Clash extends Component {
                             nameClass="player__cards"
                             action={this.chooseCardToPlay}
                         />
+                        {
+                            choosenCard.name
+                            &&
+                            <Button
+                                action={this.playRound}
+                                text="Play round"
+                                id="playRound"
+                            />
+                        }
                         <Battleground
-                            opponentCard={opponentDeck[0]}
+                            opponentCard={opponentCard}
                             playerCard={choosenCard}
+                            temporaryOpponentCard={temporaryOpponentCard}
+                            temporaryChoosenCard={temporaryChoosenCard}
+                            isVisible={isVisible}
                         />
+                        {
+                            roundCounter === 5
+                            &&
+                            <Button
+                                action={this.props.goToShowResult}
+                                text="Show result"
+                            />
+                        }
+
+
                         <Cards
                             deck={opponentDeck}
                             nameClass="opponent__cards"
                         />
+                        <p className="player-points">{playerPoints}</p>
+                        <p className="opponent-points">{opponentPoints}</p>
                     </Fragment>
                 }
             </div>

@@ -22,12 +22,12 @@ const cardStats = ({
         <p className="card__fraction">
             Fraction: {fraction}
         </p>
-        <h2 className="card__health">
-            Health: {healthPower}
-        </h2>
         <p className="card__cardValue">
             Card value: {cardValue}
         </p>
+        <h2 className="card__health">
+            Health: {healthPower}
+        </h2>
     </Fragment>
 );
 

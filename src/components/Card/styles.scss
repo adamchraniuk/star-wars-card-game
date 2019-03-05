@@ -1,11 +1,9 @@
 @import "../../styles/variables";
 
-
 .card {
   border-radius: 15px;
   border: 2px solid $c-orange;
   width: 100%;
-  max-width: calc(25% - 30px);
   height: auto;
   display: flex;
   align-items: center;
@@ -24,6 +22,9 @@
 
   &.light__side {
     background: url("../../images/light_card.jpg") no-repeat;
+    .card__fraction {
+      color: #00af00;
+    }
   }
 
   &.dark__side {
@@ -83,15 +84,23 @@
   &__name {
     margin-top: 2rem;
     font-size: 2rem;
+    font-family: $font-sw-hol;
+    font-weight: normal;
   }
-
+  &__health{
+    font-family: $font-tie;
+    font-weight: 400;
+  }
   &__name, &__health {
     color: $c-yellow;
   }
 
   p {
     font-size: 1.2rem;
+    margin: 5px 0;
     color: $c-white;
+    font-family: $font-sw-jedi;
+    font-weight: lighter;
   }
 }
 
@@ -108,7 +117,7 @@
 .player__cards {
   .card {
     &__flip {
-     min-height: 150px;
+      min-height: 150px;
     }
   }
 }

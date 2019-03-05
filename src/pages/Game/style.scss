@@ -8,5 +8,7 @@
   height: 100%;
   text-align: center;
   overflow: hidden;
-  
+  @media screen and (max-width: $breakpoint-lg) {
+    background-size: cover;
+  }
 }

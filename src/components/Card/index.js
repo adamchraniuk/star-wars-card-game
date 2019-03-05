@@ -21,11 +21,11 @@ const card = ({
     <Fragment>
         {cardEnable &&
         <div className={'card ' +
-        (isVisible && 'selected ') +
-        (fraction === 'Jedi' ? 'light__side ' : '' ) +
-        (fraction === 'Sith' ? 'dark__side ' : '' ) +
-        (fraction === 'Rebels' ? 'rebels ' : '' ) +
-        (fraction === 'bounty_hunter' ? 'bounty__hunter ' : '')
+        (isVisible && ' selected ') +
+        (fraction === 'Jedi' ? ' light__side ' : '' ) +
+        (fraction === 'Sith' ? ' dark__side ' : '' ) +
+        (fraction === 'Rebels' ? ' rebels ' : '' ) +
+        (fraction === 'bounty_hunter' ? ' bounty__hunter ' : '')
         }
              onClick={ () => selectTheCard(id)}>
             <div className="card__flip">

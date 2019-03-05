@@ -1,45 +1,57 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import Card from '../../components/Card';
-import 'pure-react-carousel/dist/react-carousel.es.css';
+import Coverflow from 'react-coverflow';
 import './style.scss';
-
 
 const SelectedCards = ({
                            deck,
                            action,
                            nameClass,
-                           pocket
+                           pocket,
+                           active
                        }) => (
     <div className={nameClass + ' selectedCards'}>
+        <Coverflow
+            width={960}
+            height={300}
+            displayQuantityOfSide={3}
+            currentFigureScale={.9}
+            otherFigureScale={.5}
+            navigation={true}
+            enableHeading={false}
+            active={active}
+            enableScroll={false}
+        >
+            {deck.map((card) => {
+                    const {
+                        id,
+                        name,
+                        fraction,
+                        defence,
+                        healthPower,
+                        attack,
+                        avatar,
+                        cardValue,
+                    } = card;
+                    return (
+                        <Card
+                            key={id}
+                            name={name}
+                            attack={attack}
+                            defence={defence}
+                            selectTheCard={action}
+                            id={id}
+                            avatar={avatar}
+                            cardValue={cardValue}
+                            fraction={fraction}
+                            healthPower={healthPower}
 
-        {deck.map((card) => {
-                const {
-                    id,
-                    name,
-                    fraction,
-                    defence,
-                    healthPower,
-                    attack,
-                    avatar,
-                    cardValue,
-                } = card;
-                return (
-                    <Card
-                        name={name}
-                        attack={attack}
-                        defence={defence}
-                        selectTheCard={action}
-                        id={id}
-                        avatar={avatar}
-                        cardValue={cardValue}
-                        fraction={fraction}
-                        healthPower={healthPower}
-                        key={id}
-                    />
-                )
-            }
-        )}
+                        />
+                    )
+                }
+            )}
+        </Coverflow>
         <div className='pocket'>
             {pocket ? <h1 className='color-white'>
                 Pocket: {pocket}$</h1> : null}

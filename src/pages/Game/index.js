@@ -11,8 +11,7 @@ import {
 import SelectCardToPlay from './SelectCardToPlay';
 import WelcomeInfo from "../../components/WelcomeInfo/withLogo";
 import Button from "../../components/Button";
-import SelectOpponent from "../../components/SelectOpponent";
-import SelectGameMode from "../../components/SelectGameMode";
+import GameModeAndOpponent from "../../components/GameModeAndOpponent";
 import './style.scss';
 
 class Game extends Component {
@@ -22,19 +21,25 @@ class Game extends Component {
         playerWon: false,
     };
 
-
     goToSelectCards = () => {
         this.setState({
             gameState: GAME_STATES.SELECT_CARDS
         });
     };
+
+    playAgain = () => {
+        this.setState({
+            gameState: GAME_STATES.SELECT_CARDS
+        })
+    };
+
     checkPlayersDeck = (array) => {
         this.setState({
             playerDeck: array,
         })
     };
-    goToGameMode = (id) => {
 
+    goToGameMode = (id) => {
         if (id === GAME_MODE.GAME_MODE_1) {
             this.setState({
                 gameState: GAME_STATES.GAME_MODE_1
@@ -45,8 +50,8 @@ class Game extends Component {
                 gameState: GAME_STATES.GAME_MODE_2
             })
         }
-
     };
+
     selectOpponent = (id) => {
         if (id === OPPONENT_FRACTION.SITH) {
             CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.SITH;
@@ -60,9 +65,7 @@ class Game extends Component {
         this.setState({
             gameState: GAME_STATES.SELECT_GAME_MODE,
         });
-
     };
-
 
     goToSelectOpponent = () => {
         const playerDeckLength = this.state.playerDeck.length;
@@ -75,6 +78,11 @@ class Game extends Component {
         }
     };
 
+    goToShowResult = () => {
+        this.setState({
+            gameState: GAME_STATES.END_GAME,
+        })
+    };
 
     render() {
         const {gameState} = this.state;
@@ -87,7 +95,6 @@ class Game extends Component {
                     {
                         gameState === GAME_STATES.START_GAME &&
                         <Button action={this.goToSelectCards} text='Start Game!'/>
-
                     }
                     {
                         gameState === GAME_STATES.SELECT_CARDS &&
@@ -104,21 +111,32 @@ class Game extends Component {
                     }
                     {
                         gameState === GAME_STATES.SELECT_OPPONENT &&
-                        <SelectOpponent
-                            config={OPPONENT_FRACTION_ARRAY}
-                            selectOpponent={this.selectOpponent}
-                        />
+                        <Fragment>
+                            <h2 className="c-white">
+                                Select your opponent
+                            </h2>
+                            <GameModeAndOpponent
+                                config={OPPONENT_FRACTION_ARRAY}
+                                action={this.selectOpponent}
+                            />
+                        </Fragment>
                     }
                     {
                         gameState === GAME_STATES.SELECT_GAME_MODE &&
-                        <SelectGameMode config={GAME_MODE_ARRAY}
-                                        selectGameModeFunc={this.goToGameMode}
-                        />
+                        <Fragment>
+                            <h2 className="c-white">
+                                Select game mode
+                            </h2>
+                            <GameModeAndOpponent config={GAME_MODE_ARRAY}
+                                                 action={this.goToGameMode}
+                            />
+                        </Fragment>
                     }
                     {
                         gameState === GAME_STATES.GAME_MODE_1 &&
                         <Clash
                             game="game1"
+                            goToShowResult={this.goToShowResult}
                         />
                     }
                     {
@@ -129,7 +147,13 @@ class Game extends Component {
                     }
                     {
                         gameState === GAME_STATES.END_GAME &&
-                        <h1 className="color-white">{this.state.playerWon ? 'Player' : 'Opponent'} is the winner!</h1>
+                        <Fragment>
+
+                            <h1 className="color-yellow">{this.state.playerWon ? 'Player' : 'Opponent'} is the
+                                winner!</h1>
+                            <Button text='Play again'
+                                    action={this.playAgain}/>
+                        </Fragment>
                     }
 
                 </div>
