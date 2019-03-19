@@ -2,17 +2,19 @@ import React, {Component, Fragment} from 'react';
 import {
     OPPONENT_FRACTION,
     CHOOSEN_OPPONENT,
-    PLAYER_DECK
+    PLAYER_DECK,
+    APP_STATES
 } from "../config";
-import {APP_STATES} from "../../People/config";
 import Cards from "../../../components/Cards";
 import Battleground from '../Battleground';
+import {fetchOpponentCard} from '../../../actions'
 import Button from "../../../components/Button";
+import connect from "react-redux/es/connect/connect";
 
 class Clash extends Component {
 
     state = {
-        opponentDeck: [],
+        opponentCards: [],
         playerDeck: [],
         choosenCard: {},
         opponentCard: {},
@@ -28,6 +30,45 @@ class Clash extends Component {
         this.getOpponent();
         this.setPlayerDeck();
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.opponentCards) {
+            this.setState({
+                opponentCards: nextProps.opponentCards,
+                temporaryOpponentCard: nextProps.opponentCards[0],
+                appState: APP_STATES.RESULTS,
+            });
+        } else if (nextProps.error !== null) {
+            this.setState({
+                appState: APP_STATES.ERROR
+            })
+        } else {
+            this.setState({
+                appState: APP_STATES.LOADING,
+            });
+        }
+    }
+    getOpponent = () => {
+        const fraction = CHOOSEN_OPPONENT.CHOOSEN_OPPONENT;
+        if (fraction === OPPONENT_FRACTION.SITH) {
+            this.setState({
+                appState: APP_STATES.LOADING,
+            });
+            this.props.dispatch(fetchOpponentCard('Sith'));
+
+        } else if (fraction === OPPONENT_FRACTION.BOUNTY_HUNTERS) {
+            this.setState({
+                appState: APP_STATES.LOADING
+            });
+            this.props.dispatch(fetchOpponentCard('Bounty_Hunters'));
+
+        } else if (fraction === OPPONENT_FRACTION.JEDI) {
+            this.setState({
+                appState: APP_STATES.LOADING
+            });
+            this.props.dispatch(fetchOpponentCard('Jedi'));
+        }
+    };
 
     setPlayerDeck = () => {
         this.setState({
@@ -51,16 +92,12 @@ class Clash extends Component {
 
     playRound = () => {
         const choosenCard = this.state.choosenCard;
-        if (!choosenCard.name) {
-            alert("Choose card");
-            return;
-        }
         let opponentCard = this.state.opponentCard;
         let playerDeck = this.state.playerDeck;
-        const opponentDeck = this.state.opponentDeck;
-        const index = Math.floor(Math.random() * opponentDeck.length);
-        opponentCard = opponentDeck[index];
-        opponentDeck.splice(index, 1);
+        const opponentCards = this.state.opponentCards;
+        const index = Math.floor(Math.random() * opponentCards.length);
+        opponentCard = opponentCards[index];
+        opponentCards.splice(index, 1);
         playerDeck = playerDeck.filter(card => card.id !== choosenCard.id);
         if (choosenCard.attack - opponentCard.defence > opponentCard.attack - choosenCard.defence) {
             this.setState({
@@ -79,7 +116,7 @@ class Clash extends Component {
         this.setState({
             roundCounter: this.state.roundCounter + 1,
             playerDeck,
-            opponentDeck,
+            opponentCards,
             isVisible: true,
             opponentCard: {},
             choosenCard: {},
@@ -88,107 +125,28 @@ class Clash extends Component {
         });
     };
 
-    whoWon = () =>{
-            const playerPoints = this.state.playerPoints;
-            const opponentPoints = this.state.opponentPoints;
-            if(playerPoints > opponentPoints){
-                const playerWon = "Congratulations! You won ;-)";
-                this.props.whoWon(playerWon);
-            } else if (opponentPoints > playerPoints){
-                const opponentWon = "Sorry, you loose, try again";
-                this.props.whoWon(opponentWon);
-            } else {
-                const draw = "Draw, you were close";
-                this.props.whoWon(draw)
-            }
-    };
-
-    getOpponent = () => {
-        const fraction = CHOOSEN_OPPONENT.CHOOSEN_OPPONENT;
-
-        if (fraction === OPPONENT_FRACTION.SITH) {
-            this.setState({
-                appState: APP_STATES.LOADING,
-            });
-
-            fetch('http://localhost:8000/Sith')
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error!');
-                    }
-                })
-                .then(response => {
-                    this.setState({
-                        appState: APP_STATES.RESULTS,
-                        opponentDeck: response,
-                        temporaryOpponentCard: response[0],
-                    })
-                })
-                .catch(error => {
-                    this.setState({
-                        appState: APP_STATES.ERROR,
-                    })
-                })
-        } else if (fraction === OPPONENT_FRACTION.BOUNTY_HUNTERS) {
-            this.setState({
-                appState: APP_STATES.LOADING
-            });
-
-            fetch('http://localhost:8000/Bounty_Hunters')
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error!');
-                    }
-                })
-                .then(response => {
-                    this.setState({
-                        appState: APP_STATES.RESULTS,
-                        opponentDeck: response,
-                        temporaryOpponentCard: response[0],
-                    })
-                })
-                .catch(error => {
-                    this.setState({
-                        appState: APP_STATES.ERROR,
-                    })
-                })
-        } else if (fraction === OPPONENT_FRACTION.JEDI) {
-            this.setState({
-                appState: APP_STATES.LOADING
-            });
-
-            fetch('http://localhost:8000/Jedi')
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error!');
-                    }
-                })
-                .then(response => {
-                    this.setState({
-                        appState: APP_STATES.RESULTS,
-                        opponentDeck: response,
-                        temporaryOpponentCard: response[0],
-                    })
-                })
-                .catch(error => {
-                    this.setState({
-                        appState: APP_STATES.ERROR,
-                    })
-                })
+    whoWon = () => {
+        const playerPoints = this.state.playerPoints;
+        const opponentPoints = this.state.opponentPoints;
+        if (playerPoints > opponentPoints) {
+            const playerWon = "Congratulations! You won ;-)";
+            this.props.whoWon(playerWon);
+        } else if (opponentPoints > playerPoints) {
+            const opponentWon = "Sorry, you loose, try again";
+            this.props.whoWon(opponentWon);
+        } else {
+            const draw = "Draw, you were close";
+            this.props.whoWon(draw)
         }
     };
+
+
 
     render() {
         const {
             appState,
             playerDeck,
-            opponentDeck,
+            opponentCards,
             choosenCard,
             opponentCard,
             temporaryChoosenCard,
@@ -217,12 +175,11 @@ class Clash extends Component {
                             action={this.chooseCardToPlay}
                         />
                         {
-                            choosenCard.name
+                            choosenCard.name && roundCounter < 5
                             &&
                             <Button
                                 action={this.playRound}
                                 text="Play round"
-                                id="playRound"
                             />
                         }
                         <Battleground
@@ -234,25 +191,17 @@ class Clash extends Component {
                         />
                         {
                             roundCounter === 5
-                                &&
-                                <Button
-                                    action={()=>{
-                                        this.whoWon();
-                                        this.props.goToShowResult();
-                                    }}
-                                    text="Show result"
-                                />
-                        }
-                        {
-                            choosenCard.name && roundCounter < 5
-                                &&
-                                <Button
-                                    action={this.playRound}
-                                    text="Play round"
-                                />
+                            &&
+                            <Button
+                                action={() => {
+                                    this.whoWon();
+                                    this.props.goToShowResult();
+                                }}
+                                text="Show result"
+                            />
                         }
                         <Cards
-                            deck={opponentDeck}
+                            deck={opponentCards}
                             nameClass="opponent__cards"
                         />
                         <p className="player-points">{playerPoints}</p>
@@ -264,5 +213,11 @@ class Clash extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    playerCards: state.data.playerCards,
+    opponentCards: state.data.opponentCards,
+    loading: state.loading,
+    error: state.error,
+});
 
-export default Clash;
+export default connect(mapStateToProps)(Clash);

@@ -1,0 +1,23 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.clash_opponent_deck, .clash_player_deck{
+  height: 20vh;
+  background-color: red;
+  display: flex;
+}
+
+.clash_opponent_table, .clash_player_table{
+  height: 30vh;
+  background-color: sandybrown;
+  border-bottom: 2px solid black;
+  display: flex;
+}
+
+.clash_player_table{
+  border-bottom: none;
+  border-top: 2px solid black ;
+  display: flex;
+}

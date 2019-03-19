@@ -1,15 +1,19 @@
 import React, {Component, Fragment} from 'react';
-import {APP_STATES} from "../../People/config";
-import {PLAYER_DECK} from "../config";
-import Cards from "../../../components/Cards/bigCards";
+import {
+    APP_STATES,
+    PLAYER_DECK
+} from "../config";
+import Cards from "../../../components/Cards/";
 import Button from '../../../components/Button';
+import connect from "react-redux/es/connect/connect";
+import {fetchData, fetchPlayerCards, saveallCards} from '../../../actions'
 import './style.scss';
 
 class SelectCardToPlay extends Component {
 
     state = {
-        playerDeck: [],
-        selectedDeck: [],
+        allCards: [],
+        playerCards: [],
         pocket: 50,
         appState: APP_STATES.INIT,
         playerActive: 0,
@@ -17,109 +21,59 @@ class SelectCardToPlay extends Component {
     };
 
     componentDidMount() {
-        this.loadData();
+        const {
+            dispatch,
+            playerName
+        } = this.props;
+        dispatch(fetchData());
+        dispatch(fetchPlayerCards(playerName));
         this.setState({
-            playerDeck: this.state.playerDeck.sort((a, b) => b.cardValue - a.cardValue),
-            selectedDeck:this.state.selectedDeck.sort((a, b) => b.cardValue - a.cardValue),
+            allCards: this.state.allCards.sort((a, b) => b.cardValue - a.cardValue),
+            playerCards: this.state.playerCards.sort((a, b) => b.cardValue - a.cardValue),
         })
     };
 
-    loadData = () => {
-        this.setState({
-            appState: APP_STATES.LOADING
-        });
-        fetch('http://localhost:8000/AllCards')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Error!');
-                }
-            })
-            .then(response => {
-                this.setState({
-                    playerDeck: response
-                })
-            }).then(() => {
-            fetch('http://localhost:8000/PlayerDeck/' + this.props.playerName)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error!');
-                    }
-                })
-                .then(response => {
-                    this.setState({
-                        appState: APP_STATES.RESULTS,
-                        selectedDeck: response.deck,
-                        pocket: response.pocket
-                    });
-                    this.props.checkPlayersDeck(this.state.selectedDeck);
-                    PLAYER_DECK.PLAYER_DECK = this.state.selectedDeck;
-                })
-                .catch(error => {
-                    this.setState({
-                        appState: APP_STATES.ERROR,
-                    })
-                });
-        })
-            .catch(error => {
-                this.setState({
-                    appState: APP_STATES.ERROR,
-                })
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.playerCards && nextProps.allCards) {
+            this.setState({
+                allCards: nextProps.allCards,
+                playerCards: nextProps.playerCards,
+                pocket: nextProps.pocket,
+                appState: APP_STATES.RESULTS,
             });
-    };
-
-    savePlayerDeck = () => {
-        fetch('http://localhost:8000/PlayerDeck/' + this.props.playerName, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                deck: this.state.selectedDeck,
-                pocket: this.state.pocket,
-            }),
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else if (response.status === 404) {
-                    this.props.history.push('/404');
-                } else {
-                    throw new Error('Error!');
-                }
+            this.props.checkPlayersDeck(nextProps.playerCards);
+            PLAYER_DECK.PLAYER_DECK = nextProps.playerCards
+        } else if (nextProps.error !== null) {
+            this.setState({
+                appState: APP_STATES.ERROR
             })
-            .then(() => {
-                alert('Your deck has been saved.')
-            })
-            .catch(error => {
-                this.setState({
-                    appState: APP_STATES.ERROR,
-                })
-            })
-    };
+        } else {
+            this.setState({
+                appState: APP_STATES.LOADING,
+            });
+        }
+    }
 
     selectCard = (cardID) => {
-        const selectedCardsArray = this.state.playerDeck;
-        let selectedDeck = this.state.selectedDeck;
+        const selectedCardsArray = this.state.allCards;
+        let playerCards = this.state.playerCards;
         const pocket = this.state.pocket;
         let cardValue;
-        const selectedCardsArrayLenght = this.state.playerDeck.length;
+        const selectedCardsArrayLenght = this.state.allCards.length;
 
         for (let i = 0; i < selectedCardsArrayLenght; i++) {
             if (cardID === selectedCardsArray[i].id) {
                 const selectedCard = selectedCardsArray[i];
                 if (pocket >= selectedCard.cardValue) {
                     cardValue = selectedCard.cardValue;
-                    const checkForDuplicateOfCards = selectedDeck.find((element, index) => {
-                        return selectedDeck[index].id === selectedCard.id
+                    const checkForDuplicateOfCards = playerCards.find((element, index) => {
+                        return playerCards[index].id === selectedCard.id
                     });
                     if (checkForDuplicateOfCards === undefined) {
-                        selectedDeck.push(selectedCard);
+                        playerCards.push(selectedCard);
                         this.setState({
-                            selectedDeck: selectedDeck,
+                            playerCards: playerCards,
                             pocket: pocket - cardValue,
                         });
                     } else {
@@ -134,15 +88,15 @@ class SelectCardToPlay extends Component {
             }
         }
         selectedCardsArray.sort((a, b) => b.cardValue - a.cardValue);
-        selectedDeck.sort((a, b) => b.cardValue - a.cardValue);
+        playerCards.sort((a, b) => b.cardValue - a.cardValue);
     };
 
     removeCard = (cardID) => {
-        let removedCardsArray = this.state.selectedDeck;
-        let playerDeck = this.state.playerDeck;
+        let removedCardsArray = this.state.playerCards;
+        let allCards = this.state.allCards;
         let cardValue;
         const pocket = this.state.pocket;
-        const removedCardsArrayLenght = this.state.selectedDeck.length;
+        const removedCardsArrayLenght = this.state.playerCards.length;
         for (let i = 0; i < removedCardsArrayLenght; i++) {
             if (cardID === removedCardsArray[i].id) {
                 const removedCard = removedCardsArray.splice(i, 1);
@@ -151,25 +105,31 @@ class SelectCardToPlay extends Component {
             }
         }
 
-        playerDeck.sort((a, b) => b.cardValue - a.cardValue);
+        allCards.sort((a, b) => b.cardValue - a.cardValue);
         removedCardsArray.sort((a, b) => b.cardValue - a.cardValue);
         this.setState({
-            playerDeck,
-            selectedDeck: removedCardsArray,
+            allCards,
+            playerCards: removedCardsArray,
             pocket: pocket + cardValue,
         })
     };
-
 
     render() {
 
         const {
             appState,
-            playerDeck,
-            selectedDeck,
+            allCards,
+            playerCards,
             pocket,
             playerActive,
-            otherActive} = this.state;
+            otherActive
+        } = this.state;
+        const {
+            dispatch,
+            checkPlayersDeck,
+            playerName
+        } = this.props;
+
         return (
             <Fragment>
                 {
@@ -179,17 +139,17 @@ class SelectCardToPlay extends Component {
                 {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
-                        <Button text="Save your deck" action={this.savePlayerDeck}/>
+                        <Button text="Save your deck" action={() => dispatch(saveallCards(playerName))}/>
                         <h1 className='color-white'>
                             Choose your cards
                         </h1>
                         <div className="card__boards"
-                             onClick={() => this.props.checkPlayersDeck(selectedDeck)}>
+                             onClick={() => checkPlayersDeck(playerCards)}>
                             <h2 className="color-yellow">
                                 Your current deck</h2>
 
                             <Cards
-                                deck={selectedDeck}
+                                deck={playerCards}
                                 action={this.removeCard}
                                 nameClass="selected__cards"
                                 pocket={pocket}
@@ -197,7 +157,7 @@ class SelectCardToPlay extends Component {
                             />
                             <h2 className='color-orange'>Buy a new card</h2>
                             <Cards
-                                deck={playerDeck}
+                                deck={allCards}
                                 action={this.selectCard}
                                 nameClass="all__player__cards"
                                 active={otherActive}
@@ -205,9 +165,24 @@ class SelectCardToPlay extends Component {
                         </div>
                     </Fragment>
                 }
+                {
+                    appState === APP_STATES.ERROR &&
+                    <h1 className='color-white'>
+                        {this.props.error.message}
+                    </h1>
+                }
             </Fragment>
         )
     }
 }
 
-export default SelectCardToPlay;
+const mapStateToProps = state => ({
+    allCards: state.data.allCards,
+    playerCards: state.data.playerCards,
+    pocket: state.data.pocket,
+    loading: state.loading,
+    error: state.error,
+});
+
+
+export default connect(mapStateToProps)(SelectCardToPlay);

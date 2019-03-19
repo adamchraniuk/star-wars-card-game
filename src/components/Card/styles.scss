@@ -64,7 +64,7 @@
     transform-style: preserve-3d;
     transition: all .3s ease-in-out;
     perspective: 1000px;
-    min-height: 530px;
+    min-height: 250px;
     transform: rotateY(180deg) translate3d(0, 0, 0);
 
     &--front, &--back {
@@ -91,12 +91,12 @@
   }
 
   &__name {
-    margin-top: 2rem;
-    font-size: 2rem;
+    font-size: 0.9rem;
     font-family: $font-sw-hol;
     font-weight: normal;
   }
   &__health{
+    font-size: 0.9rem;
     font-family: $font-tie;
     font-weight: 400;
   }
@@ -105,7 +105,7 @@
   }
 
   p {
-    font-size: 1.2rem;
+    font-size: 0.6rem;
     margin: 5px 0;
     color: $c-white;
     font-family: $font-sw-jedi;
@@ -132,7 +132,7 @@
 }
 
 .avatar {
-  width: 50%;
-  height: 150px;
+  width: 40%;
+  height: 80px;
   object-fit: contain;
 }

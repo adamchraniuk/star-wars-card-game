@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Clash from './Clash';
 import Clash2 from './Clash2';
+import Clash3 from './Clash3'
 import {
     GAME_STATES,
     GAME_MODE_ARRAY,
@@ -18,7 +19,7 @@ import './style.scss';
 class Game extends Component {
     state = {
         gameState: GAME_STATES.START_GAME,
-        playerDeck: [],
+        playerCards: [],
         playerWon: " ",
     };
 
@@ -36,7 +37,7 @@ class Game extends Component {
 
     checkPlayersDeck = (array) => {
         this.setState({
-            playerDeck: array,
+            playerCards: array,
         })
     };
 
@@ -49,6 +50,11 @@ class Game extends Component {
         if (id === GAME_MODE.GAME_MODE_2) {
             this.setState({
                 gameState: GAME_STATES.GAME_MODE_2
+            })
+        }
+        if (id === GAME_MODE.GAME_MODE_3) {
+            this.setState({
+                gameState: GAME_STATES.GAME_MODE_3
             })
         }
     };
@@ -69,8 +75,8 @@ class Game extends Component {
     };
 
     goToSelectOpponent = () => {
-        const playerDeckLength = this.state.playerDeck.length;
-        if (playerDeckLength >= 5) {
+        const playerCardsLength = this.state.playerCards.length;
+        if (playerCardsLength >= 5) {
             this.setState({
                 gameState: GAME_STATES.SELECT_OPPONENT,
             })
@@ -85,7 +91,7 @@ class Game extends Component {
         })
     };
 
-    whoWon = (playerWon) =>{
+    whoWon = (playerWon) => {
         this.setState({
             playerWon
         })
@@ -99,16 +105,21 @@ class Game extends Component {
         return (
             <div className="game">
                 <div className="container">
-                    <header>
-                        <WelcomeInfo paragraph='Card game'/>
-                    </header>
                     {
                         gameState === GAME_STATES.START_GAME &&
-                        <Button action={this.goToSelectCards} text='Start Game!'/>
+                        <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
+                            <Button action={this.goToSelectCards} text='Start Game!'/>
+                        </Fragment>
                     }
                     {
                         gameState === GAME_STATES.SELECT_CARDS &&
                         <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
                             <Button
                                 text="play"
                                 action={this.goToSelectOpponent}
@@ -122,6 +133,9 @@ class Game extends Component {
                     {
                         gameState === GAME_STATES.SELECT_OPPONENT &&
                         <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
                             <h2 className="c-white">
                                 Select your opponent
                             </h2>
@@ -134,6 +148,9 @@ class Game extends Component {
                     {
                         gameState === GAME_STATES.SELECT_GAME_MODE &&
                         <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
                             <h2 className="c-white">
                                 Select game mode
                             </h2>
@@ -160,9 +177,19 @@ class Game extends Component {
                         />
                     }
                     {
+                        gameState === GAME_STATES.GAME_MODE_3 &&
+                        <Clash3
+                            game="game3"
+                            goToShowResult={this.goToShowResult}
+                            whoWon={this.whoWon}
+                        />
+                    }
+                    {
                         gameState === GAME_STATES.END_GAME &&
                         <Fragment>
-
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
                             <h1 className="color-yellow">{playerWon}</h1>
                             <Button text='Play again'
                                     action={this.playAgain}/>
@@ -173,5 +200,7 @@ class Game extends Component {
         )
     }
 }
+
+
 
 export default Game;

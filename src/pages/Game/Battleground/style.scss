@@ -1,24 +1,68 @@
 @import "../../../styles/variables";
 
 .opponent__cards {
+  width: 60%;
+  margin: 0 auto 15px;
+
   button {
     display: none;
+  }
+}
+
+.player__cards, .opponent__cards {
+  width: 30%;
+  min-height: 90vh;
+  margin: 30px auto;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  .card {
+    height: 140px;
+    width: 38%;
+
+    &__name {
+      font-size: 0.7rem;
+    }
+
+    p {
+      display: none;
+    }
+
+    &__health {
+      display: none;
+    }
   }
 }
 
 .battleground {
   display: flex;
   width: 100%;
-  margin: 30px auto;
+  margin: 20px auto;
 
   .player, .opponent {
     width: 45%;
 
     .card {
-      width: 100%;
+      width: 50%;
       max-width: 50%;
-      margin: 0 auto;
-      animation: newCard .2s ease-in forwards;
+      height: 290px;
+      margin: 28vh auto;
+      padding-bottom: 0;
+      animation: newCard .4s ease-in forwards;
+      cursor: default;
+
+      &:hover {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .opponent {
+    .card {
+      animation: rotateCard .4s ease-in forwards;
+
+      &__flip {
+        transform: rotateY(0deg) translate3d(0, 0, 0);
+      }
     }
   }
 
@@ -43,11 +87,21 @@
 }
 
 .clash {
+  display: flex;
   position: relative;
-}
 
-#playRound {
+  button {
+    position: fixed;
+    bottom: 18%;
+    left: 43.5%;
+  }
 
+  h1.color-white {
+    position: fixed;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes newCard {
@@ -58,21 +112,19 @@
     opacity: 1;
   }
 }
-.clash {
-  position: relative;
-}
+
 .player-points, .opponent-points {
   display: block;
   position: absolute;
-  top: 50%;
+  top: 37%;
   font-size: 60px;
   color: $c-yellow;
 }
 
 .player-points {
-  left: 0;
+  left: 21%;
 }
 
 .opponent-points {
-  right: 0;
+  right: 21%;
 }

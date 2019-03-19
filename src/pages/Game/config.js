@@ -1,3 +1,10 @@
+export const APP_STATES = {
+    INIT: 0,
+    LOADING: 1,
+    RESULTS: 2,
+    ERROR: 3,
+};
+
 export const GAME_STATES = {
     START_GAME: 0,
     SELECT_CARDS: 1,
@@ -5,7 +12,8 @@ export const GAME_STATES = {
     SELECT_GAME_MODE: 3,
     GAME_MODE_1: 4,
     GAME_MODE_2: 5,
-    END_GAME: 6,
+    GAME_MODE_3: 6,
+    END_GAME: 7,
 };
 
 export const CHOOSEN_OPPONENT = {
@@ -33,7 +41,7 @@ export const OPPONENT_FRACTION_ARRAY = [
     },
     {
         id: '2',
-        name: 'BOUNTY_HUNTERS'
+        name: 'BOUNTY HUNTERS'
     }
 ];
 
@@ -45,10 +53,15 @@ export const GAME_MODE_ARRAY = [
     {
         id: '2',
         name: "HEROIC BATTLE"
-    }
+    },
+    // {
+    //     id: '3',
+    //     name: "STRATEGY HEROES BATTLE",
+    // }
 ];
 
 export const GAME_MODE = {
     GAME_MODE_1: '1',
-    GAME_MODE_2: '2'
+    GAME_MODE_2: '2',
+    // GAME_MODE_3: '3',
 };
