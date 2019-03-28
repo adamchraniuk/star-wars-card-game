@@ -1,19 +1,20 @@
 import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
 import {
     APP_STATES,
     PLAYER_DECK
 } from "../config";
 import Cards from "../../../components/Cards/";
+import Button from '../../../components/Button';
 import connect from "react-redux/es/connect/connect";
-import {fetchPlayerDeck, fetchPlayerCards,} from '../../../actions'
+import {fetchData, fetchPlayerCards, savePlayerCards} from '../../../actions'
 import './style.scss';
 
-class SelectCardToPlay extends Component {
+class Shop extends Component {
 
     state = {
         allCards: [],
         playerCards: [],
+        pocket: 50,
         appState: APP_STATES.INIT,
         playerActive: 0,
         otherActive: 0
@@ -24,28 +25,21 @@ class SelectCardToPlay extends Component {
             dispatch,
             playerName
         } = this.props;
+        dispatch(fetchData());
         dispatch(fetchPlayerCards(playerName));
-        dispatch(fetchPlayerDeck(playerName));
     };
 
-    componentWillUnmount() {
-        this.setState({
-            allCards: [],
-            playerCards: [],
-            appState: APP_STATES.INIT,
-            playerActive: 0,
-            otherActive: 0
-        })
-    }
-
     componentWillReceiveProps(nextProps) {
-        if (nextProps.deck && nextProps.playerAllCards) {
+        if (nextProps.playerAllCards && nextProps.allCards) {
             this.setState({
-                allCards: nextProps.playerAllCards.sort((a, b) => b.attack - a.attack),
-                playerCards: nextProps.deck.sort((a, b) => b.attack - a.attack),
+                allCards: nextProps.allCards,
+                playerCards: nextProps.playerAllCards,
+                pocket: nextProps.pocket,
                 appState: APP_STATES.RESULTS,
             });
-            PLAYER_DECK.PLAYER_DECK = this.state.playerCards;
+            this.state.playerCards.sort((a, b) => b.attack - a.attack);
+            // this.state.allCards.sort((a, b) => b.attack - a.attack);   ----> ZROBIC RANDOM KOLEJNOSC
+            PLAYER_DECK.PLAYER_DECK = nextProps.playerCards
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
@@ -57,20 +51,18 @@ class SelectCardToPlay extends Component {
         }
     }
 
-    componentDidUpdate() {
-        if (PLAYER_DECK.PLAYER_DECK !== this.state.playerCards) {
-            PLAYER_DECK.PLAYER_DECK = this.state.playerCards;
-        }
-    }
-
     selectCard = (cardID) => {
         const selectedCardsArray = this.state.allCards;
         let playerCards = this.state.playerCards;
+        const pocket = this.state.pocket;
+        let cardValue;
         const selectedCardsArrayLenght = this.state.allCards.length;
+
         for (let i = 0; i < selectedCardsArrayLenght; i++) {
             if (cardID === selectedCardsArray[i].id) {
-                if (playerCards.length < 5) {
-                    const selectedCard = selectedCardsArray[i];
+                const selectedCard = selectedCardsArray[i];
+                if (pocket >= selectedCard.cardValue) {
+                    cardValue = selectedCard.cardValue;
                     const checkForDuplicateOfCards = playerCards.find((element, index) => {
                         return playerCards[index].id === selectedCard.id
                     });
@@ -78,33 +70,45 @@ class SelectCardToPlay extends Component {
                         playerCards.push(selectedCard);
                         this.setState({
                             playerCards: playerCards,
+                            pocket: pocket - cardValue,
                         });
                     } else {
                         alert('You have this card already')
                     }
                     break;
-                }
-                else {
-                    alert('You can have only 5 cards')
+                } else {
+                    alert("You don't have enough money");
+                    selectedCardsArray.push(selectedCard);
+                    return
                 }
             }
         }
-        this.state.playerCards.sort((a, b) => b.attack - a.attack);
-        this.state.allCards.sort((a, b) => b.attack - a.attack);
     };
 
     removeCard = (cardID) => {
         let removedCardsArray = this.state.playerCards;
+        let cardValue;
+        const pocket = this.state.pocket;
         const removedCardsArrayLenght = this.state.playerCards.length;
         for (let i = 0; i < removedCardsArrayLenght; i++) {
             if (cardID === removedCardsArray[i].id) {
-                removedCardsArray.splice(i, 1);
+                const removedCard = removedCardsArray.splice(i, 1);
+                cardValue = removedCard[0].cardValue;
                 break;
             }
         }
+
+        removedCardsArray.sort((a, b) => b.attack - a.attack);
         this.setState({
-            deck: removedCardsArray,
+            playerCards: removedCardsArray,
+            pocket: pocket + cardValue,
         })
+    };
+
+    saveCardsAndGoBack = () => {
+        this.props.dispatch(savePlayerCards(this.props.playerName, this.state.pocket));
+        this.props.goBackToStart();
+
     };
 
     render() {
@@ -113,8 +117,9 @@ class SelectCardToPlay extends Component {
             appState,
             allCards,
             playerCards,
+            pocket,
             playerActive,
-            otherActive,
+            otherActive
         } = this.state;
 
         return (
@@ -126,26 +131,32 @@ class SelectCardToPlay extends Component {
                 {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
+                        <Button text="Save your deck" action={() =>
+                            this.saveCardsAndGoBack()
+                        }/>
                         <h1 className='color-white'>
                             Choose your cards
                         </h1>
                         <div className="card__boards">
                             <h2 className="color-yellow">
-                                Your current deck</h2>
+                                Your card collection</h2>
 
                             <Cards
                                 deck={playerCards}
                                 action={this.removeCard}
-                                nameClass="selected__cards min-height-300"
+                                nameClass="selected__cards"
+                                pocket={pocket}
                                 active={playerActive}
                             />
-                            <h2 className='color-yellow'>Your all cards</h2>
+
+                            <h2 className='color-yellow'>Buy a new card</h2>
                             <Cards
                                 deck={allCards}
                                 action={this.selectCard}
-                                nameClass="ava__player__cards"
+                                nameClass="all__cards"
                                 active={otherActive}
                             />
+
                         </div>
                     </Fragment>
                 }
@@ -161,13 +172,12 @@ class SelectCardToPlay extends Component {
 }
 
 const mapStateToProps = state => ({
+    allCards: state.data.allCards,
     playerAllCards: state.data.playerAllCards,
-    deck: state.data.deck,
+    pocket: state.data.pocket,
     loading: state.loading,
     error: state.error,
 });
-SelectCardToPlay.propTypes = {
-    playerName: PropTypes.string,
-};
 
-export default connect(mapStateToProps)(SelectCardToPlay);
+
+export default connect(mapStateToProps)(Shop);

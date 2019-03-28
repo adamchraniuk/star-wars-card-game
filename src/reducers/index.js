@@ -2,7 +2,6 @@ import {
     FETCH_DATA_BEGIN,
     FETCH_DATA_SUCCESS,
     FETCH_DATA_FAILURE,
-    FETCH_DATA_UPDATE
 } from "../actions";
 
 
@@ -37,12 +36,6 @@ export function dataReducer(
                 loading: false,
                 error: action.payload.error,
                 data: [],
-            };
-        case FETCH_DATA_UPDATE:
-            return {
-                ...state,
-                loading: false,
-                data: action.payload.data,
             };
         default:
             return state;

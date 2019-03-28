@@ -9,8 +9,9 @@ const battleground = ({
                           temporaryChoosenCard,
                           temporaryOpponentCard,
                           isVisible,
+                          className
                       }) => (
-    <div className={"battleground"}>
+    <div className={className}>
         <div className='player'>
             {playerCard.name ?
             <Card
@@ -36,6 +37,7 @@ const battleground = ({
                     cardValue={temporaryChoosenCard.cardValue}
                     fraction={temporaryChoosenCard.fraction}
                     healthPower={temporaryChoosenCard.healthPower}
+                    isSelected={temporaryChoosenCard.isSelected}
                     key={temporaryChoosenCard.id}
                 />
             }
@@ -71,6 +73,7 @@ const battleground = ({
                     cardValue={temporaryOpponentCard.cardValue}
                     fraction={temporaryOpponentCard.fraction}
                     healthPower={temporaryOpponentCard.healthPower}
+                    isSelected={temporaryOpponentCard.isSelected}
                     key={temporaryOpponentCard.id}
                     isVisible={isVisible}
                 />
@@ -82,10 +85,12 @@ const battleground = ({
 
 battleground.propTypes = {
     playerCard: PropTypes.object,
-    opponentCard: PropTypes.object.isRequired
+    opponentCard: PropTypes.object.isRequired,
+    className: PropTypes.string,
 };
 
 battleground.defaultProps = {
-    playerCard: {}
+    playerCard: {},
+    className: 'battleground'
 };
 export default battleground;

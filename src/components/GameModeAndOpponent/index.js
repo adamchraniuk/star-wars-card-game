@@ -1,30 +1,30 @@
 import React from 'react';
-import PropTypes from "prop-types";
-import Button from "../../components/Button";
+import "./styles.scss";
+import PropTypes from 'prop-types';
 
-const GameModeAndOpponent = ({
-                            config,
-                            action
-                        }) => (
-    config.map(gameMode => (
-        <Button
+const GameModeAndOpponent2 = ({ config, action }) =>(
+    config.map(gameMode =>(
+        <div
+            className='game_container'
             key={gameMode.id}
-            text={gameMode.name}
-            id={gameMode.id}
-            action={() => action(gameMode.id)}
-        />
+            id={`opponent-${gameMode.id}`}
+            onClick={()=> action(gameMode.id)}
+        >
+            <h2>{gameMode.name}</h2>
+            <img src={gameMode.url} alt=""/>
+        </div>
     ))
 );
 
-export default GameModeAndOpponent;
-
-GameModeAndOpponent.propTypes = {
+GameModeAndOpponent2.propTypes = {
     config: PropTypes.array,
     selectGameModeFunc: PropTypes.func
 };
 
-GameModeAndOpponent.defaultProps = {
+GameModeAndOpponent2.defaultProps = {
     config: [],
     action: () => {
     }
 };
+
+export default GameModeAndOpponent2;

@@ -10,7 +10,7 @@ const SelectedCards = ({
                            pocket,
                        }) => (
     <div className={nameClass + ' selectedCards'}>
-            {deck.map((card) => {
+            {deck.map((card,index) => {
                     const {
                         id,
                         name,
@@ -20,6 +20,7 @@ const SelectedCards = ({
                         attack,
                         avatar,
                         cardValue,
+                        isSelected
                     } = card;
                     return (
                         <Card
@@ -33,6 +34,8 @@ const SelectedCards = ({
                             cardValue={cardValue}
                             fraction={fraction}
                             healthPower={healthPower}
+                            isSelected={isSelected}
+                            positionNumber={index}
                         />
                     )
                 }

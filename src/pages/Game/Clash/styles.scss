@@ -25,12 +25,6 @@
 
     &__health, &__attack, &__defence {
       display: none;
-      &__after-attack{
-        display: none;
-      }
-      &__decrease-defence{
-        display:none;
-      }
     }
     .attack-icon, .defence-icon, .hp-icon{
       display: none;
@@ -38,7 +32,7 @@
   }
 }
 
-.battleground {
+.battleground-clash1 {
   display: flex;
   width: 100%;
   margin: 20px auto;
@@ -59,44 +53,12 @@
       &:hover {
         transform: scale(1);
       }
-      &__destroyed-card{
-        overflow: hidden;
-        width: 50%;
-        max-width: 50%;
-        height: 290px;
-        margin: 28vh auto;
-        padding-bottom: 0;
-        animation: newCard .4s ease-in forwards;
-        cursor: default;
-        animation: destroyed-card 1.5s forwards;
-      }
 
-    }
-    @keyframes destroyed-card {
-      0%{
-
+      &__defence {
+        display: none;
       }
-
-      45%{
-        transform: scale(1);
-      }
-
-      50%{
-        transform: scale(1.3);
-        box-shadow: 0 0 15px 2px white;
-      }
-
-      90%{
-        transform: scale(0.5);
-        box-shadow: 0 0 40px 30px white;
-      }
-      99%{
-        box-shadow: 0 0 40px 120px white;
-      }
-
-      100%{
-        transform: scale(0);
-        box-shadow: 0 0 0 white;
+      .defence-icon{
+        display: none;
       }
     }
 
@@ -183,4 +145,16 @@
 
 .opponent-points {
   right: 33%;
+}
+
+.after-attack{
+  .card__health{
+    color:red;
+    font-size: 40px;
+  }
+
+  .card__defence{
+    color: red;
+    font-size: 40px;
+  }
 }

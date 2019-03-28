@@ -561,15 +561,157 @@
   ],
   "PlayerDeck": [
     {
+      "playerAllCards": [
+        {
+          "id": "18",
+          "name": "Darth Revan",
+          "fraction": "Sith",
+          "attack": 44,
+          "defence": 29,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/deathbattlefanon/images/9/9f/Revan.png/revision/latest?cb=20180612195326",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "14",
+          "name": "Anakin Skywalker",
+          "fraction": "Jedi",
+          "attack": 42,
+          "defence": 20,
+          "healthPower": 34,
+          "avatar": "https://vignette.wikia.nocookie.net/one-minute-meelee-fanon/images/7/76/Anakin_%282%29.png/revision/latest?cb=20181231121934",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "17",
+          "name": "Darth Vader",
+          "fraction": "Sith",
+          "attack": 37,
+          "defence": 35,
+          "healthPower": 46,
+          "avatar": "https://vignette.wikia.nocookie.net/zeropedia/images/4/49/Darth_Vader4.png/revision/latest?cb=20160216080323&path-prefix=pl",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "21",
+          "name": "Boba Fett",
+          "fraction": "bounty_hunter",
+          "attack": 33,
+          "defence": 32,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/disney/images/f/f4/Boba_Fett3.png/revision/latest?cb=20170301145056&path-prefix=pl",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "25",
+          "name": "IG 88",
+          "fraction": "bounty_hunter",
+          "attack": 33,
+          "defence": 14,
+          "healthPower": 29,
+          "avatar": "https://vignette.wikia.nocookie.net/starwars/images/f/f2/IG-88.png/revision/latest?cb=20160911044452",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "1",
+          "name": "Luke Skywalker",
+          "fraction": "Rebels",
+          "attack": 25,
+          "defence": 20,
+          "healthPower": 40,
+          "avatar": "https://vignette.wikia.nocookie.net/parody/images/9/9b/Luke_Skywalker.png/revision/latest?cb=20170422170845",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "2",
+          "name": "R2-D2",
+          "fraction": "Rebels",
+          "attack": 11,
+          "defence": 33,
+          "healthPower": 35,
+          "avatar": "https://vignette.wikia.nocookie.net/droidapedia/images/0/0c/R2-D2.png/revision/latest?cb=20161209185108",
+          "cardValue": 10,
+          "mana": 1
+        }
+      ],
+      "pocket": 0,
+      "deck": [],
+      "id": "Tutorial"
+    },
+    {
+      "playerAllCards": [
+        {
+          "id": "13",
+          "name": "Mace Windu",
+          "fraction": "Jedi",
+          "attack": 46,
+          "defence": 13,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/parody/images/b/bf/Mace_Windu.png/revision/latest?cb=20170522231128",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "18",
+          "name": "Darth Revan",
+          "fraction": "Sith",
+          "attack": 44,
+          "defence": 29,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/deathbattlefanon/images/9/9f/Revan.png/revision/latest?cb=20180612195326",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "14",
+          "name": "Anakin Skywalker",
+          "fraction": "Jedi",
+          "attack": 42,
+          "defence": 20,
+          "healthPower": 34,
+          "avatar": "https://vignette.wikia.nocookie.net/one-minute-meelee-fanon/images/7/76/Anakin_%282%29.png/revision/latest?cb=20181231121934",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "17",
+          "name": "Darth Vader",
+          "fraction": "Sith",
+          "attack": 37,
+          "defence": 35,
+          "healthPower": 46,
+          "avatar": "https://vignette.wikia.nocookie.net/zeropedia/images/4/49/Darth_Vader4.png/revision/latest?cb=20160216080323&path-prefix=pl",
+          "cardValue": 10,
+          "mana": 1
+        },
+        {
+          "id": "21",
+          "name": "Boba Fett",
+          "fraction": "bounty_hunter",
+          "attack": 33,
+          "defence": 32,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/disney/images/f/f4/Boba_Fett3.png/revision/latest?cb=20170301145056&path-prefix=pl",
+          "cardValue": 10,
+          "mana": 1
+        }
+      ],
+      "pocket": 70,
       "deck": [
         {
-          "id": "20",
-          "name": "Darth Plagueis",
-          "fraction": "Sith",
-          "attack": 41,
-          "defence": 33,
-          "healthPower": 36,
-          "avatar": "https://vignette.wikia.nocookie.net/swmerchandise/images/0/01/18_Darth_Plagueis_%28A5087%29_P.gif/revision/latest?cb=20140525202445",
+          "id": "13",
+          "name": "Mace Windu",
+          "fraction": "Jedi",
+          "attack": 46,
+          "defence": 13,
+          "healthPower": 38,
+          "avatar": "https://vignette.wikia.nocookie.net/parody/images/b/bf/Mace_Windu.png/revision/latest?cb=20170522231128",
           "cardValue": 10,
           "mana": 1
         },
@@ -596,29 +738,28 @@
           "mana": 1
         },
         {
-          "id": "19",
-          "name": "Darth Maul",
-          "fraction": "Sith",
-          "attack": 34,
-          "defence": 22,
-          "healthPower": 32,
-          "avatar": "https://vignette.wikia.nocookie.net/vsbattles/images/5/54/Darth_Maul_render.png/revision/latest?cb=20170728104618",
+          "id": "4",
+          "name": "Chewbacca",
+          "fraction": "Rebels",
+          "attack": 28,
+          "defence": 30,
+          "healthPower": 45,
+          "avatar": "https://vignette.wikia.nocookie.net/disney/images/f/f1/Chewbacca.png/revision/latest?cb=20141130190424",
           "cardValue": 10,
           "mana": 1
         },
         {
-          "id": "16",
-          "name": "Galactic Emperor",
-          "fraction": "Sith",
-          "attack": 44,
-          "defence": 26,
-          "healthPower": 40,
-          "avatar": "https://vignette.wikia.nocookie.net/starwars/images/a/a3/Emperor_Palpatine_GA.png/revision/latest/scale-to-width-down/500?cb=20170503060153",
+          "id": "22",
+          "name": "Bossk",
+          "fraction": "bounty_hunter",
+          "attack": 26,
+          "defence": 38,
+          "healthPower": 44,
+          "avatar": "https://vignette.wikia.nocookie.net/star-wars-canon/images/f/f4/Bossk_detail.png/revision/latest?cb=20151215031630",
           "cardValue": 10,
           "mana": 1
         }
       ],
-      "pocket": 0,
       "id": "Adam"
     }
   ]

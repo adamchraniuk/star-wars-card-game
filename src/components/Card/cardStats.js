@@ -1,5 +1,8 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
+import Attack from "../../images/icons/light-sabers.png"
+import Defence from "../../images/icons/shield.png";
+import HealtPower from "../../images/icons/hearts.png";
 
 const cardStats = ({
                        attack,
@@ -7,27 +10,28 @@ const cardStats = ({
                        name,
                        fraction,
                        healthPower,
-                       cardValue,
+                       isSelected
                    }) => (
     <Fragment>
         <h2 className="card__name">
             {name}
         </h2>
+        <img className='attack-icon' src={Attack} alt=""/>
         <p className="card__attack">
-            Attack: {attack}
+             {attack}
         </p>
-        <p className="card__attack">
-            Defence: {defence}
+        <img className={`defence-icon${isSelected==='__decrease-defence'? isSelected: ''}${isSelected==='__after-attack'? isSelected: ''}`} src={Defence} alt=""/>
+        <p
+            className={`card__defence${isSelected==='__decrease-defence'? isSelected: ''}${isSelected==='__after-attack'? isSelected: ''}`}
+        >
+             {defence}
         </p>
-        <p className="card__fraction">
-            Fraction: {fraction}
+        <img className={`hp-icon${isSelected==='__decrease-defence'? isSelected: ''}${isSelected==='__after-attack'? isSelected: ''}`} src={HealtPower} alt=""/>
+        <p
+            className={`card__health${isSelected==='__decrease-defence'? isSelected: ''}${isSelected==='__after-attack'? isSelected: ''}`}
+        >
+             {healthPower}
         </p>
-        <p className="card__cardValue">
-            Card value: {cardValue}
-        </p>
-        <h2 className="card__health">
-            Health: {healthPower}
-        </h2>
     </Fragment>
 );
 
@@ -35,8 +39,6 @@ cardStats.propTypes = {
     name: PropTypes.string.isRequired,
     attack: PropTypes.number.isRequired,
     defence: PropTypes.number.isRequired,
-    cardValue: PropTypes.number.isRequired,
-    fraction: PropTypes.string.isRequired,
     healthPower: PropTypes.number.isRequired
 };
 

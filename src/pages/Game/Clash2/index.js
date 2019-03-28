@@ -55,6 +55,11 @@ class Clash2 extends Component {
     chooseCardToPlay = (id) => {
         const playerDeckLength = this.state.playerDeck.length;
         const playerDeck = this.state.playerDeck;
+        const opponentCard = this.state.temporaryChoosenCard;
+        const choosenCard = this.state.temporaryOpponentCard;
+        opponentCard.isSelected = "";
+        choosenCard.isSelected = "";
+
         for (let i = 0; i < playerDeckLength; i++) {
             if (id === playerDeck[i].id) {
                 this.setState({
@@ -65,26 +70,27 @@ class Clash2 extends Component {
         }
     };
 
+
     playRound = () => {
         let choosenCard = this.state.choosenCard;
-        if (!choosenCard.name) {
-            alert("Choose card");
-            return;
-        }
         let opponentCard = this.state.opponentCard;
         let playerDeck = this.state.playerDeck;
         let opponentCards = this.state.opponentCards;
+
         const index = Math.floor(Math.random() * opponentCards.length);
         opponentCard = opponentCards[index];
         opponentCards.splice(index, 1);
         playerDeck = playerDeck.filter(card => card.id !== choosenCard.id);
+
         let playerAttack = choosenCard.attack - opponentCard.defence;
         let opponentAttack = opponentCard.attack - choosenCard.defence;
+
         if (playerAttack >= 0) {
             opponentCard.defence = 0;
             opponentCard.healthPower -= playerAttack;
             if (opponentCard.healthPower <= 0) {
                 opponentCard.healthPower = 0;
+                opponentCard.isSelected = '__destroyed-card';
                 this.setState({
                     opponentCards,
                     choosenCard: {},
@@ -95,6 +101,7 @@ class Clash2 extends Component {
                 })
             } else if (opponentCard.healthPower > 0) {
                 opponentCards.push(opponentCard);
+                opponentCard.isSelected = '__after-attack';
                 this.setState({
                     opponentCards,
                     choosenCard: {},
@@ -106,6 +113,7 @@ class Clash2 extends Component {
             }
         } else {
             opponentCard.defence -= choosenCard.attack;
+            opponentCard.isSelected = '__decrease-defence';
             opponentCards.push(opponentCard);
             this.setState({
                 opponentCards,
@@ -116,11 +124,13 @@ class Clash2 extends Component {
                 isVisible: true,
             })
         }
+
         if (opponentAttack > 0) {
             choosenCard.defence = 0;
             choosenCard.healthPower -= opponentAttack;
             if (choosenCard.healthPower <= 0) {
                 choosenCard.healthPower = 0;
+                choosenCard.isSelected = '__destroyed-card';
                 this.setState({
                     playerDeck,
                     choosenCard: {},
@@ -130,6 +140,7 @@ class Clash2 extends Component {
                     isVisible: true,
                 })
             } else if (choosenCard.healthPower > 0) {
+                choosenCard.isSelected = '__after-attack';
                 playerDeck.push(choosenCard);
                 this.setState({
                     playerDeck,
@@ -142,6 +153,7 @@ class Clash2 extends Component {
             }
         } else {
             choosenCard.defence -= opponentCard.attack;
+            choosenCard.isSelected = '__decrease-defence'
             playerDeck.push(choosenCard);
             this.setState({
                 playerDeck,
@@ -173,6 +185,11 @@ class Clash2 extends Component {
                 appState: APP_STATES.LOADING
             });
             this.props.dispatch(fetchOpponentCard('Jedi'));
+        } else if (fraction === OPPONENT_FRACTION.REBELS) {
+            this.setState({
+                appState: APP_STATES.LOADING
+            });
+            this.props.dispatch(fetchOpponentCard('Rebels'));
         }
     };
 
@@ -192,6 +209,7 @@ class Clash2 extends Component {
         }
     };
 
+
     render() {
         const {
             appState,
@@ -204,6 +222,7 @@ class Clash2 extends Component {
             isVisible,
         } = this.state;
 
+
         return (
             <div className="clash">
                 {
@@ -214,7 +233,7 @@ class Clash2 extends Component {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
                         <h1 className="color-white">
-                            Choose your card!
+                            {choosenCard.name?'Play round':'Choose your card!'}
                         </h1>
                         <Cards
                             deck={playerDeck}
@@ -254,6 +273,7 @@ class Clash2 extends Component {
                         />
                     </Fragment>
                 }
+                <Button className='btn2' text="Go back to start" action={this.props.goBackToStart}/>
             </div>
         );
     }

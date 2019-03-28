@@ -6,6 +6,7 @@ import {
     APP_STATES
 } from "../config";
 import Cards from "../../../components/Cards";
+import './styles.scss';
 import Battleground from '../Battleground';
 import {fetchOpponentCard} from '../../../actions'
 import Button from "../../../components/Button";
@@ -48,6 +49,7 @@ class Clash extends Component {
             });
         }
     }
+
     getOpponent = () => {
         const fraction = CHOOSEN_OPPONENT.CHOOSEN_OPPONENT;
         if (fraction === OPPONENT_FRACTION.SITH) {
@@ -67,6 +69,11 @@ class Clash extends Component {
                 appState: APP_STATES.LOADING
             });
             this.props.dispatch(fetchOpponentCard('Jedi'));
+        } else if (fraction === OPPONENT_FRACTION.REBELS) {
+            this.setState({
+                appState: APP_STATES.LOADING
+            });
+            this.props.dispatch(fetchOpponentCard('Rebels'));
         }
     };
 
@@ -141,7 +148,6 @@ class Clash extends Component {
     };
 
 
-
     render() {
         const {
             appState,
@@ -167,7 +173,7 @@ class Clash extends Component {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
                         <h1 className="color-white">
-                            Choose your card!
+                            {choosenCard.name?'Play round':'Choose your card!'}
                         </h1>
                         <Cards
                             deck={playerDeck}
@@ -184,6 +190,7 @@ class Clash extends Component {
                         }
                         <Battleground
                             opponentCard={opponentCard}
+                            className={'battleground-clash1'}
                             playerCard={choosenCard}
                             temporaryOpponentCard={temporaryOpponentCard}
                             temporaryChoosenCard={temporaryChoosenCard}
@@ -208,6 +215,7 @@ class Clash extends Component {
                         <p className="opponent-points">{opponentPoints}</p>
                     </Fragment>
                 }
+                <Button className='btn2' text="Go back to start" action={this.props.goBackToStart}/>
             </div>
         );
     }
