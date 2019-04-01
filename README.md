@@ -1,16 +1,15 @@
+Welcome! 
+
+
+It is a card game in the star-wars universe, created using the react + redux library.
+
+
 U need json-server:
+https://github.com/typicode/json-server
 
-npm install -g json-server
-
-Then run npm install:
-
+Type: 
 npm install
+json-server --watch db.json --port 8000
 
-Then run server:
 
-
-json-server --watch src/database/db.json --port 8000
-
-In other console run app: 
-
-npm start
+Have fun !
