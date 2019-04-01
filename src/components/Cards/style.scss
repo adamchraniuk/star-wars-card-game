@@ -2,6 +2,7 @@
 
 .card__boards {
   margin-top: 50px;
+
 }
 
 .selectedCards {
@@ -12,9 +13,10 @@
   border: 2px solid $c-yellow;
   border-radius: 15px;
   margin-bottom: 30px;
+  background-color: rgba(0,0,0,0.7);
 
   > div {
-    width: 100%;
+    width: 15%;
   }
 
   .pocket {
@@ -37,25 +39,20 @@
 }
 
 
-.game {
+.example-enter {
+  opacity: 0.01;
+}
 
-  .coverflow__figure__3bk_C {
-    box-shadow: none;
-  }
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
 
-  .coverflow__actions__1D5QO {
-    bottom: 10px;
-  }
+.example-leave {
+  opacity: 1;
+}
 
-  .coverflow__container__1P-xE {
-    overflow-x: hidden;
-  }
-  .coverflow__actions__1D5QO .coverflow__button__25AqX {
-    border: none;
-    background-color: $c-yellow;
-    font-size: 1rem;
-    color: $c-black;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }

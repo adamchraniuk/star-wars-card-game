@@ -20,6 +20,27 @@
     transform: scale(1.05);
   }
 
+  &__destroyed-card{
+    border-radius: 15px;
+    background-color: black;
+    filter: grayscale(100%);
+    border: 2px solid $c-orange;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 15px;
+    box-sizing: border-box;
+    padding: 1rem .5rem 1.2rem .5rem;
+    position: relative;
+    transition: transform .2s ease-in-out;
+    cursor: pointer;
+  }
+
+
+
   &.light__side {
     background: url("../../images/light_card.jpg") no-repeat;
     .card__fraction {
@@ -53,7 +74,6 @@
   }
 
   .logo {
-    margin-top: 2rem;
     width: 100%;
   }
 
@@ -64,7 +84,7 @@
     transform-style: preserve-3d;
     transition: all .3s ease-in-out;
     perspective: 1000px;
-    min-height: 530px;
+    min-height: 250px;
     transform: rotateY(180deg) translate3d(0, 0, 0);
 
     &--front, &--back {
@@ -90,26 +110,251 @@
     }
   }
 
-  &__name {
-    margin-top: 2rem;
-    font-size: 2rem;
-    font-family: $font-sw-hol;
-    font-weight: normal;
-  }
-  &__health{
-    font-family: $font-tie;
-    font-weight: 400;
-  }
-  &__name, &__health {
-    color: $c-yellow;
+  &__name{
+    position: absolute;
+    top: 0;
+    left:50%;
+    transform: translateX(-50%);
+    text-transform: uppercase;
+    color: white;
+    font-size: 15px;
+    width: 100%;
   }
 
-  p {
-    font-size: 1.2rem;
-    margin: 5px 0;
-    color: $c-white;
-    font-family: $font-sw-jedi;
-    font-weight: lighter;
+  &__attack{
+    position: absolute;
+    bottom: 35%;
+    left:5%;
+    color: white;
+    font-size: 35px;
+  }
+
+  &__health{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 35px;
+    &__decrease-defence{
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 35px;
+    }
+    &__after-attack{
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 35px;
+      animation: afterAttack 1s linear forwards;
+    }
+  }
+
+  &__defence{
+    position: absolute;
+    bottom: 35%;
+    right: 15%;
+    transform: translateX(50%);
+    color: white;
+    font-size: 35px;
+
+    &__decrease-defence{
+      position: absolute;
+      bottom: 35%;
+      right: 15%;
+      transform: translateX(50%);
+      color: white;
+      font-size: 35px;
+      animation: decreaseDefence 1s linear forwards;
+    }
+
+    &__after-attack{
+      position: absolute;
+      bottom: 35%;
+      right: 15%;
+      transform: translateX(50%);
+      color: darkred;
+      font-size: 35px;
+    }
+
+    @keyframes decreaseDefence {
+      0%{
+
+      }
+
+      50%{
+        color: white;
+      }
+
+      52%{
+        color: red;
+      }
+
+      100%{
+        color: red;
+      }
+    }
+
+    @keyframes afterAttack {
+      0%{
+
+      }
+
+      52%{
+        color: red;
+      }
+
+      100%{
+        color: red;
+      }
+    }
+
+  }
+
+
+  .hp-icon{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    bottom: 14%;
+    left:50%;
+    transform: translateX(-50%);
+    &__after-attack{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 14%;
+      left:50%;
+      transform: translateX(-50%);
+      animation: afterAttackIcon 1s linear forwards;
+    }
+
+    &__decrease-defence{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 14%;
+      left:50%;
+      transform: translateX(-50%);
+    }
+  }
+  .attack-icon{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: 8.5%;
+    bottom:50%;
+  }
+  .defence-icon{
+    position: absolute;
+    width: 45px;
+    height: 30px;
+    right: 15%;
+    transform: translateX(50%);
+    bottom:49%;
+
+    &__after-attack{
+      position: absolute;
+      width: 45px;
+      height: 30px;
+      right: 15%;
+      transform: translateX(50%);
+      bottom:49%;
+    }
+    &__decrease-defence{
+      position: absolute;
+      width: 45px;
+      height: 30px;
+      right: 15%;
+      transform: translateX(50%);
+      bottom:49%;
+      animation: decreaseDefenceIcon 1s linear forwards;
+      z-index: 2;
+    }
+  }
+
+  @keyframes decreaseDefenceIcon {
+    0%{
+      right: 15%;
+      transform: translateX(50%);
+      bottom:49%;
+    }
+
+    40%{
+      right: 15%;
+      transform: translateX(50%);
+      bottom:60%;
+    }
+
+    50%{
+      right: 15%;
+      transform: translateX(50%);
+      bottom:42%;
+    }
+
+    60%{
+      right: 15%;
+      transform: translateX(50%);
+      bottom:49%;
+    }
+
+    100%{
+      right: 15%;
+      transform: translateX(50%);
+      bottom:49%;
+    }
+  }
+
+  @keyframes afterAttackIcon {
+    0%{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 14%;
+      left:50%;
+      transform: translateX(-50%);
+    }
+
+    40%{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 25%;
+      left:50%;
+      transform: translateX(-50%);
+    }
+
+    50%{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 7%;
+      left:50%;
+      transform: translateX(-50%);
+    }
+
+    60%{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 14%;
+      left:50%;
+      transform: translateX(-50%);
+    }
+
+    100%{
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      bottom: 14%;
+      left:50%;
+      transform: translateX(-50%);
+    }
   }
 }
 
@@ -132,7 +377,10 @@
 }
 
 .avatar {
-  width: 50%;
-  height: 150px;
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%);
+  top:12%;
+  height: 100%;
   object-fit: contain;
 }

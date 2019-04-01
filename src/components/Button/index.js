@@ -5,9 +5,10 @@ import './styles.scss';
 const button = ({
                     text,
                     action,
-                    id
+                    id,
+                    className
                 }) => (
-    <button className="btn" onClick={action} id={id}>
+    <button className={className} onClick={action} id={id}>
         {text}
     </button>);
 
@@ -15,11 +16,13 @@ button.propTypes = {
     text: PropTypes.string.isRequired,
     action: PropTypes.func,
     id: PropTypes.string,
+    className: PropTypes.string,
 };
 
 button.defaultProps = {
     action: () => {},
     id: '',
+    className: 'btn',
 };
 
 export default button;

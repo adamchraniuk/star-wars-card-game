@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import Card from '../../components/Card';
-import Coverflow from 'react-coverflow';
 import './style.scss';
 
 const SelectedCards = ({
@@ -9,21 +8,9 @@ const SelectedCards = ({
                            action,
                            nameClass,
                            pocket,
-                           active
                        }) => (
     <div className={nameClass + ' selectedCards'}>
-        <Coverflow
-            width={960}
-            height={300}
-            displayQuantityOfSide={3}
-            currentFigureScale={.9}
-            otherFigureScale={.5}
-            navigation={true}
-            enableHeading={false}
-            active={active}
-            enableScroll={false}
-        >
-            {deck.map((card) => {
+            {deck.map((card,index) => {
                     const {
                         id,
                         name,
@@ -33,6 +20,7 @@ const SelectedCards = ({
                         attack,
                         avatar,
                         cardValue,
+                        isSelected
                     } = card;
                     return (
                         <Card
@@ -46,11 +34,12 @@ const SelectedCards = ({
                             cardValue={cardValue}
                             fraction={fraction}
                             healthPower={healthPower}
+                            isSelected={isSelected}
+                            positionNumber={index}
                         />
                     )
                 }
             )}
-        </Coverflow>
         <div className='pocket'>
             {pocket ? <h1 className='color-white'>
                 Pocket: {pocket}$</h1> : null}

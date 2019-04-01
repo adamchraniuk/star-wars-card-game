@@ -1,0 +1,140 @@
+@import "../../../styles/variables";
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.clash_opponent_deck, .clash_player_deck{
+  height: 22vh;
+  background-color: rgba(0,0,0, 0.7);
+  display: flex;
+  .selectedCards{
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    width: 100%;
+    min-height: 0px;
+    border: none;
+    background-color: transparent;
+    .card{
+      width: 8%;
+      margin: 0 10px;
+      transition: .4s;
+
+      &__health{
+        display: block;
+        font-size: 6px;
+      }
+
+      &__name{
+        font-size: 10px;
+      }
+
+      &__attack{
+        display: block;
+        font-size: 6px;
+      }
+      &:hover{
+        transform: scale(1.25);
+      }
+    }
+  }
+
+  button.btn{
+    position: fixed;
+    bottom: 3%;
+    right: 7%;
+  }
+
+}
+
+.clash_opponent_deck{
+
+   div.whoseTurn {
+     position: fixed;
+     background-color: red;
+     width: 30px;
+     height: 30px;
+     border: 2px solid lighten(red, 20%);
+     border-radius: 50%;
+     top: 17%;
+     left: 6%;
+   }
+
+  p.mana_level{
+    position: fixed;
+    font-size: 20px;
+    color: white;
+    top: 15%;
+    left: 11%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+ }
+
+.clash_player_deck{
+
+  div.whoseTurn {
+    position: fixed;
+    background-color: red;
+    width: 30px;
+    height: 30px;
+    border: 2px solid lighten(red, 20%);
+    border-radius: 50%;
+    bottom: 17%;
+    right: 6%;
+  }
+
+  p.mana_level{
+    position: fixed;
+    font-size: 20px;
+    color: white;
+    bottom: 15%;
+    right: 11%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+.clash_opponent_table, .clash_player_table{
+  height: 28vh;
+  background-color: rgba(168,60,60, 0.7);
+  border-bottom: 1px solid black;
+  display: flex;
+
+  .selectedCards{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 0px;
+    height: auto;
+    border: none;
+    background-color: transparent;
+    .card{
+      width: 9%;
+      height: 90%;
+      margin: 0 10px;
+
+      &__health{
+        display: block;
+        font-size: 9px;
+      }
+
+      &__name{
+        font-size: 10px;
+      }
+
+      &__attack{
+        display: block;
+        font-size: 9px;
+      }
+    }
+  }
+}
+
+.clash_player_table{
+  border-bottom: none;
+  border-top: 1px solid black ;
+}

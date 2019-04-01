@@ -1,5 +1,10 @@
 @import "./styles/_variables.scss";
 @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+
+html {
+  font-size: 16px;
+}
 
 @font-face {
   font-family: star-wars-jedi;
@@ -25,7 +30,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
-
+h1,h2,h3,h4,h5 {
+  font-family: $font;
+}
 .container {
   padding: 0 10px;
   margin: 0 auto;

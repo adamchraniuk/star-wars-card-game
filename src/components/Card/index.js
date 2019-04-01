@@ -16,18 +16,19 @@ const card = ({
                   isVisible,
                   fraction,
                   healthPower,
-                  cardValue,
+                  isSelected,
+                  positionNumber
               }) => (
     <Fragment>
         {cardEnable &&
-        <div className={'card ' +
+        <div className={`position__number-${positionNumber} card${isSelected === '__destroyed-card' ? isSelected : ''} ` +
         (isVisible && ' selected ') +
-        (fraction === 'Jedi' ? ' light__side ' : '' ) +
-        (fraction === 'Sith' ? ' dark__side ' : '' ) +
-        (fraction === 'Rebels' ? ' rebels ' : '' ) +
+        (fraction === 'Jedi' ? ' light__side ' : '') +
+        (fraction === 'Sith' ? ' dark__side ' : '') +
+        (fraction === 'Rebels' ? ' rebels ' : '') +
         (fraction === 'bounty_hunter' ? ' bounty__hunter ' : '')
         }
-             onClick={ () => selectTheCard(id)}>
+             onClick={() => selectTheCard(id)}>
             <div className="card__flip">
                 <div className="card__flip--back">
                     <img className='logo' src={logo} title='star wars logo' alt="star wars logo"/>
@@ -40,9 +41,8 @@ const card = ({
                         attack={attack}
                         defence={defence}
                         name={name}
-                        fraction={fraction}
                         healthPower={healthPower}
-                        cardValue={cardValue}
+                        isSelected={isSelected}
                     />
                 </div>
             </div>
@@ -59,7 +59,6 @@ card.propTypes = {
     avatar: PropTypes.string,
     cardEnable: PropTypes.bool,
     isVisible: PropTypes.bool,
-    cardValue: PropTypes.number.isRequired,
     fraction: PropTypes.string.isRequired,
     healthPower: PropTypes.number.isRequired
 };
