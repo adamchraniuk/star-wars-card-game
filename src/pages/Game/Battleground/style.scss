@@ -28,12 +28,21 @@
       &__after-attack{
         display: none;
       }
+
       &__decrease-defence{
         display:none;
       }
     }
     .attack-icon, .defence-icon, .hp-icon{
       display: none;
+
+      &__after-attack{
+        display: none;
+      }
+
+      &__decrease-defence{
+        display:none;
+      }
     }
   }
 }

@@ -6,7 +6,6 @@ import {
     Switch,
     Redirect
 } from 'react-router-dom';
-import WelcomePage from './pages/WelcomePage';
 import GamePage from './pages/Game';
 
 class App extends Component {
@@ -20,13 +19,6 @@ class App extends Component {
                         to="/game"
                         exact
                     />
-
-                    <Route
-                        path="/"
-                        component={WelcomePage}
-                        exact
-                    />
-
                     <Route
                         path="/game"
                         component={GamePage}

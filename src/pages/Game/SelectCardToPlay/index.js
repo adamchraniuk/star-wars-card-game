@@ -2,11 +2,11 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {
     APP_STATES,
-    PLAYER_DECK
 } from "../config";
 import Cards from "../../../components/Cards/";
 import connect from "react-redux/es/connect/connect";
 import {fetchPlayerDeck, fetchPlayerCards,} from '../../../actions'
+
 import './style.scss';
 
 class SelectCardToPlay extends Component {
@@ -16,7 +16,7 @@ class SelectCardToPlay extends Component {
         playerCards: [],
         appState: APP_STATES.INIT,
         playerActive: 0,
-        otherActive: 0
+        otherActive: 0,
     };
 
     componentDidMount() {
@@ -26,16 +26,6 @@ class SelectCardToPlay extends Component {
         } = this.props;
         dispatch(fetchPlayerCards(playerName));
         dispatch(fetchPlayerDeck(playerName));
-    };
-
-    componentWillUnmount() {
-        this.setState({
-            allCards: [],
-            playerCards: [],
-            appState: APP_STATES.INIT,
-            playerActive: 0,
-            otherActive: 0
-        })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,23 +35,17 @@ class SelectCardToPlay extends Component {
                 playerCards: nextProps.deck.sort((a, b) => b.attack - a.attack),
                 appState: APP_STATES.RESULTS,
             });
-            PLAYER_DECK.PLAYER_DECK = this.state.playerCards;
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
             })
-        } else {
+        } else if (nextProps.loading) {
             this.setState({
                 appState: APP_STATES.LOADING,
             });
         }
     }
 
-    componentDidUpdate() {
-        if (PLAYER_DECK.PLAYER_DECK !== this.state.playerCards) {
-            PLAYER_DECK.PLAYER_DECK = this.state.playerCards;
-        }
-    }
 
     selectCard = (cardID) => {
         const selectedCardsArray = this.state.allCards;
@@ -83,8 +67,7 @@ class SelectCardToPlay extends Component {
                         alert('You have this card already')
                     }
                     break;
-                }
-                else {
+                } else {
                     alert('You can have only 5 cards')
                 }
             }
@@ -131,7 +114,8 @@ class SelectCardToPlay extends Component {
                         </h1>
                         <div className="card__boards">
                             <h2 className="color-yellow">
-                                Your current deck</h2>
+                                Your current deck
+                            </h2>
 
                             <Cards
                                 deck={playerCards}
@@ -139,13 +123,16 @@ class SelectCardToPlay extends Component {
                                 nameClass="selected__cards min-height-300"
                                 active={playerActive}
                             />
-                            <h2 className='color-yellow'>Your all cards</h2>
+                            <h2 className='color-yellow'>
+                                Your all cards
+                            </h2>
                             <Cards
                                 deck={allCards}
                                 action={this.selectCard}
                                 nameClass="ava__player__cards"
                                 active={otherActive}
                             />
+
                         </div>
                     </Fragment>
                 }

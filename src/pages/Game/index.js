@@ -10,14 +10,14 @@ import {
     OPPONENT_FRACTION_ARRAY,
     OPPONENT_FRACTION,
     CHOOSEN_OPPONENT,
-    PLAYER_DECK
+    APP_STATES,
 } from './config';
 import SelectCardToPlay from './SelectCardToPlay';
 import Shop from './Shop';
 import WelcomeInfo from "../../components/WelcomeInfo/withLogo";
 import Button from "../../components/Button";
 import GameModeAndOpponent from "../../components/GameModeAndOpponent";
-import {savePlayerCards} from '../../actions'
+import {savePlayerCards, saveAfterTutorial, fetchPlayerTutorial} from '../../actions'
 import './style.scss';
 import connect from "react-redux/es/connect/connect";
 
@@ -27,11 +27,28 @@ class Game extends Component {
         playerWon: " ",
     };
 
+    componentDidMount() {
+        this.props.dispatch(fetchPlayerTutorial('Adam'));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.error !== null) {
+            this.setState({
+                appState: APP_STATES.ERROR
+            })
+        } else if (nextProps.loading) {
+            this.setState({
+                appState: GAME_STATES.LOADING,
+            });
+        }
+    }
+
     goToSelectCards = () => {
         this.setState({
             gameState: GAME_STATES.SELECT_CARDS
         });
     };
+
     goToTutorial = () => {
         this.setState({
             gameState: GAME_STATES.TUTORIAL
@@ -46,6 +63,14 @@ class Game extends Component {
         this.setState({
             gameState: GAME_STATES.START_GAME
         })
+    };
+    tutorialAvaible = () => {
+
+        this.props.dispatch(saveAfterTutorial('Adam'));
+        this.setState({
+            gameState: GAME_STATES.START_GAME
+        })
+
     };
     playAgain = () => {
         this.setState({
@@ -84,7 +109,7 @@ class Game extends Component {
         if (id === OPPONENT_FRACTION.BOUNTY_HUNTERS) {
             CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.BOUNTY_HUNTERS;
         }
-        if(id === OPPONENT_FRACTION.REBELS){
+        if (id === OPPONENT_FRACTION.REBELS) {
             CHOOSEN_OPPONENT.CHOOSEN_OPPONENT = OPPONENT_FRACTION.REBELS;
         }
         this.setState({
@@ -93,15 +118,14 @@ class Game extends Component {
     };
 
     goToSelectOpponent = () => {
-        if (PLAYER_DECK.PLAYER_DECK.length === 5) {
+        if (this.props.deck.length === 5) {
             this.setState({
                 gameState: GAME_STATES.SELECT_OPPONENT,
             });
             this.props.dispatch(savePlayerCards(this.props.playerName, this.props.pocket));
         } else {
-            alert('select five cards');
+            alert('Choose 5 cards')
         }
-
     };
 
     goToShowResult = () => {
@@ -119,7 +143,7 @@ class Game extends Component {
     render() {
         const {
             gameState,
-            playerWon
+            playerWon,
         } = this.state;
 
         return (
@@ -131,18 +155,25 @@ class Game extends Component {
                             <header>
                                 <WelcomeInfo paragraph='Card game'/>
                             </header>
-                            <Button className='menu-button' action={this.goToSelectCards} text='Start Game!'/>
-                            <Button className='menu-button' action={this.goToShop} text='Buy new cards'/>
+                            {this.props.tutorialFinished &&
+                            <Fragment>
+                                <Button className='menu-button'
+                                        action={this.goToSelectCards}
+                                        text='Start Game!'/>
+                                <Button className='menu-button'
+                                        action={this.goToShop}
+                                        text='Buy new cards'/>
+                            </Fragment>
+                            }
                             <Button className='menu-button' action={this.goToTutorial} text='Play tutorial'/>
                         </Fragment>
                     }
                     {
                         gameState === GAME_STATES.TUTORIAL &&
                         <Fragment>
-                            <header>
-                                <WelcomeInfo paragraph='Card game'/>
-                            </header>
-                            <Tutorial goBackToStart={this.goBackToStart}/>
+                            <Tutorial
+                                goBackToStart={this.goBackToStart}
+                                tutorialAvaible={this.tutorialAvaible}/>
                         </Fragment>
                     }
                     {
@@ -209,7 +240,6 @@ class Game extends Component {
                         gameState === GAME_STATES.GAME_MODE_1 &&
                         <Fragment>
                             <Clash
-                                game="game1"
                                 goToShowResult={this.goToShowResult}
                                 whoWon={this.whoWon}
                                 goBackToStart={this.goBackToStart}
@@ -221,12 +251,11 @@ class Game extends Component {
                         <Fragment>
 
                             <Clash2
-                                game="game2"
                                 goToShowResult={this.goToShowResult}
                                 whoWon={this.whoWon}
                                 goBackToStart={this.goBackToStart}
                             />
-
+                            <Button text="Go back to start" action={this.goBackToStart}/>
                         </Fragment>
                     }
                     {
@@ -252,6 +281,24 @@ class Game extends Component {
                                     action={this.playAgain}/>
                         </Fragment>
                     }
+                    {
+                        gameState === GAME_STATES.LOADING &&
+                        <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
+                            <h1 className="color-white">Loading, please wait</h1>
+                        </Fragment>
+                    }
+                    {
+                        gameState === GAME_STATES.ERROR &&
+                        <Fragment>
+                            <header>
+                                <WelcomeInfo paragraph='Card game'/>
+                            </header>
+                            <h1 className='color-white'>There is no connection with server</h1>
+                        </Fragment>
+                    }
                 </div>
             </div>
         )
@@ -260,7 +307,11 @@ class Game extends Component {
 
 const mapStateToProps = state => ({
     playerName: state.data.id,
-    pocket: state.data.pocket
+    deck: state.data.deck,
+    pocket: state.data.pocket,
+    tutorialFinished: state.data.tutorialFinished,
+    loading: state.loading,
+    error: state.error,
 });
 
 

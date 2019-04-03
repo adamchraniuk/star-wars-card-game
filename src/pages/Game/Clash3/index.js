@@ -5,7 +5,7 @@ import "./styles.scss";
 import {
     CHOOSEN_OPPONENT,
     OPPONENT_FRACTION,
-    PLAYER_DECK,
+    // PLAYER_DECK,
     APP_STATES
 } from "../config";
 import {fetchOpponentCard} from '../../../actions'
@@ -28,7 +28,6 @@ class Clash3 extends Component {
 
     componentDidMount() {
         this.getOpponent();
-        this.setPlayerDeck();
     }
 
     componentDidUpdate(prevState) {
@@ -38,11 +37,15 @@ class Clash3 extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.opponentCards) {
+        if (nextProps.opponentCards && nextProps.deck) {
             this.setState({
                 opponentDeck: nextProps.opponentCards,
+                temporaryOpponentCard: nextProps.opponentCards[0],
+                playerDeck: nextProps.deck,
+                temporaryChoosenCard: nextProps.deck[0],
                 appState: APP_STATES.RESULTS,
             });
+
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
@@ -355,11 +358,6 @@ class Clash3 extends Component {
             this.props.dispatch(fetchOpponentCard('Rebels'));
         }
     };
-    setPlayerDeck = () => {
-        this.setState({
-            playerDeck: PLAYER_DECK.PLAYER_DECK,
-        })
-    };
 
     render() {
         const {
@@ -441,6 +439,7 @@ class Clash3 extends Component {
 const mapStateToProps = state => ({
     playerCards: state.data.playerCards,
     opponentCards: state.data.opponentCards,
+    deck: state.data.deck,
     loading: state.loading,
     error: state.error,
 });

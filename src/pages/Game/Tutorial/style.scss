@@ -95,12 +95,12 @@
     }
   }
 }
-
-//.arrow {
-//  position: absolute;
-//  left: 20px;
-//  bottom: 50%;
-//  p {
-//    color: white;
-//  }
-//}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  .fullwidth {
+    width: 100%;
+  }
+}

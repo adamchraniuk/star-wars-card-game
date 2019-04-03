@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import {
     OPPONENT_FRACTION,
     CHOOSEN_OPPONENT,
-    PLAYER_DECK,
     APP_STATES
 } from "../config";
 import Cards from "../../../components/Cards";
@@ -10,7 +9,6 @@ import Battleground from '../Battleground';
 import {fetchOpponentCard} from '../../../actions'
 import Button from "../../../components/Button";
 import connect from "react-redux/es/connect/connect";
-
 class Clash2 extends Component {
 
     state = {
@@ -25,32 +23,34 @@ class Clash2 extends Component {
 
     componentDidMount() {
         this.getOpponent();
-        this.setPlayerDeck();
+
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(!this.state.playerDeck.length || !this.state.opponentCards.length){
+            this.whoWon();
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.opponentCards) {
+        if (nextProps.opponentCards && nextProps.deck) {
             this.setState({
-                opponentCards: nextProps.opponentCards,
+                opponentCards: [...nextProps.opponentCards],
                 temporaryOpponentCard: nextProps.opponentCards[0],
+                playerDeck: [...nextProps.deck],
+                temporaryChoosenCard: nextProps.deck[0],
                 appState: APP_STATES.RESULTS,
             });
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
             })
-        } else {
+        } else if (nextProps.loading) {
             this.setState({
                 appState: APP_STATES.LOADING,
             });
         }
     }
-
-    setPlayerDeck = () => {
-        this.setState({
-            playerDeck: PLAYER_DECK.PLAYER_DECK,
-            temporaryChoosenCard: PLAYER_DECK.PLAYER_DECK[0],
-        })
-    };
 
     chooseCardToPlay = (id) => {
         const playerDeckLength = this.state.playerDeck.length;
@@ -153,7 +153,7 @@ class Clash2 extends Component {
             }
         } else {
             choosenCard.defence -= opponentCard.attack;
-            choosenCard.isSelected = '__decrease-defence'
+            choosenCard.isSelected = '__decrease-defence';
             playerDeck.push(choosenCard);
             this.setState({
                 playerDeck,
@@ -164,11 +164,18 @@ class Clash2 extends Component {
                 isVisible: true,
             })
         }
+
+        if(!playerDeck.length || !opponentCards.length){
+            setTimeout(this.props.goToShowResult, 1000);
+        }
     };
 
     getOpponent = () => {
         const fraction = CHOOSEN_OPPONENT.CHOOSEN_OPPONENT;
-        if (fraction === OPPONENT_FRACTION.SITH) {
+        if (this.props.opponentName) {
+            this.props.dispatch(fetchOpponentCard(this.props.opponentName));
+        }
+        else if (fraction === OPPONENT_FRACTION.SITH) {
             this.setState({
                 appState: APP_STATES.LOADING,
             });
@@ -191,6 +198,7 @@ class Clash2 extends Component {
             });
             this.props.dispatch(fetchOpponentCard('Rebels'));
         }
+
     };
 
     whoWon = () => {
@@ -203,7 +211,7 @@ class Clash2 extends Component {
         } else if (!playerWon) {
             const opponentWon = "Sorry, you loose, try again";
             this.props.whoWon(opponentWon);
-        } else {
+        } else if (!opponentWon && !playerWon) {
             const draw = "Draw, you were close";
             this.props.whoWon(draw)
         }
@@ -222,7 +230,6 @@ class Clash2 extends Component {
             isVisible,
         } = this.state;
 
-
         return (
             <div className="clash">
                 {
@@ -233,7 +240,7 @@ class Clash2 extends Component {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
                         <h1 className="color-white">
-                            {choosenCard.name?'Play round':'Choose your card!'}
+                            {choosenCard.name ? 'Play round' : 'Choose your card!'}
                         </h1>
                         <Cards
                             deck={playerDeck}
@@ -241,8 +248,7 @@ class Clash2 extends Component {
                             action={this.chooseCardToPlay}
                         />
                         {
-                            choosenCard.name
-                            &&
+                            choosenCard.name &&
                             <Button
                                 action={this.playRound}
                                 text="Play round"
@@ -256,31 +262,19 @@ class Clash2 extends Component {
                             temporaryChoosenCard={temporaryChoosenCard}
                             isVisible={isVisible}
                         />
-                        {
-                            (!playerDeck.length || !opponentCards.length)
-                            &&
-                            <Button
-                                action={() => {
-                                    this.whoWon();
-                                    this.props.goToShowResult();
-                                }}
-                                text="Show result"
-                            />
-                        }
                         <Cards
                             deck={opponentCards}
                             nameClass="opponent__cards"
                         />
                     </Fragment>
                 }
-                <Button className='btn2' text="Go back to start" action={this.props.goBackToStart}/>
             </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    playerCards: state.data.playerCards,
+    deck: state.data.deck,
     opponentCards: state.data.opponentCards,
     loading: state.loading,
     error: state.error,

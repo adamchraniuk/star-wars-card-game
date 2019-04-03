@@ -37,7 +37,7 @@ const Modal = ({
                 </p>
             </div>
             }
-        </div>, document.body
+        </div>, document.getElementById('portal')
     );
 
 Modal.propTypes = {

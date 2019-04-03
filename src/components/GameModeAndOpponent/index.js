@@ -8,7 +8,10 @@ const GameModeAndOpponent2 = ({ config, action }) =>(
             className='game_container'
             key={gameMode.id}
             id={`opponent-${gameMode.id}`}
-            onClick={()=> action(gameMode.id)}
+            onClick={()=>
+                action(gameMode.id)
+
+            }
         >
             <h2>{gameMode.name}</h2>
             <img src={gameMode.url} alt=""/>

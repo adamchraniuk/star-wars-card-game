@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import {
     OPPONENT_FRACTION,
     CHOOSEN_OPPONENT,
-    PLAYER_DECK,
     APP_STATES
 } from "../config";
 import Cards from "../../../components/Cards";
@@ -29,21 +28,31 @@ class Clash extends Component {
 
     componentDidMount() {
         this.getOpponent();
-        this.setPlayerDeck();
+    }
+
+    componentDidUpdate() {
+
+        if (this.state.roundCounter >= 5) {
+            this.whoWon();
+            setTimeout(this.props.goToShowResult, 1000);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.opponentCards) {
+        if (nextProps.opponentCards && nextProps.deck) {
             this.setState({
-                opponentCards: nextProps.opponentCards,
-                temporaryOpponentCard: nextProps.opponentCards[0],
+                opponentCards: [...nextProps.opponentCards],
+                temporaryOpponentCard: [...nextProps.opponentCards][0],
+                playerDeck: [...nextProps.deck],
+                temporaryChoosenCard: [...nextProps.deck][0],
                 appState: APP_STATES.RESULTS,
             });
+
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
             })
-        } else {
+        } else if (nextProps.loading) {
             this.setState({
                 appState: APP_STATES.LOADING,
             });
@@ -52,7 +61,9 @@ class Clash extends Component {
 
     getOpponent = () => {
         const fraction = CHOOSEN_OPPONENT.CHOOSEN_OPPONENT;
-        if (fraction === OPPONENT_FRACTION.SITH) {
+        if (this.props.opponentName) {
+            this.props.dispatch(fetchOpponentCard(this.props.opponentName));
+        } else if (fraction === OPPONENT_FRACTION.SITH) {
             this.setState({
                 appState: APP_STATES.LOADING,
             });
@@ -77,12 +88,6 @@ class Clash extends Component {
         }
     };
 
-    setPlayerDeck = () => {
-        this.setState({
-            playerDeck: PLAYER_DECK.PLAYER_DECK,
-            temporaryChoosenCard: PLAYER_DECK.PLAYER_DECK[0],
-        })
-    };
 
     chooseCardToPlay = (id) => {
         const playerDeckLength = this.state.playerDeck.length;
@@ -94,6 +99,9 @@ class Clash extends Component {
                     isVisible: false,
                 })
             }
+        }
+        if (this.props.playerName === 'Tutorial' && this.props.cardClicked === false) {
+            this.props.goToNextModal();
         }
     };
 
@@ -107,13 +115,15 @@ class Clash extends Component {
         opponentCards.splice(index, 1);
         playerDeck = playerDeck.filter(card => card.id !== choosenCard.id);
         if (choosenCard.attack - opponentCard.defence > opponentCard.attack - choosenCard.defence) {
+            opponentCard.isSelected = '__destroyed-card';
             this.setState({
                 playerPoints: this.state.playerPoints + 1,
             })
         } else if (choosenCard.attack - opponentCard.defence < opponentCard.attack - choosenCard.defence) {
+            choosenCard.isSelected = '__destroyed-card';
             this.setState({
                 opponentPoints: this.state.opponentPoints + 1,
-            })
+            });
         } else {
             this.setState({
                 playerPoints: this.state.playerPoints,
@@ -130,6 +140,9 @@ class Clash extends Component {
             temporaryOpponentCard: opponentCard,
             temporaryChoosenCard: choosenCard,
         });
+        if (this.props.playerName === 'Tutorial' && this.props.playRoundClicked === false) {
+            this.props.playRoundClicker();
+        }
     };
 
     whoWon = () => {
@@ -173,7 +186,7 @@ class Clash extends Component {
                     appState === APP_STATES.RESULTS &&
                     <Fragment>
                         <h1 className="color-white">
-                            {choosenCard.name?'Play round':'Choose your card!'}
+                            {choosenCard.name ? 'Play round' : 'Choose your card!'}
                         </h1>
                         <Cards
                             deck={playerDeck}
@@ -196,17 +209,7 @@ class Clash extends Component {
                             temporaryChoosenCard={temporaryChoosenCard}
                             isVisible={isVisible}
                         />
-                        {
-                            roundCounter === 5
-                            &&
-                            <Button
-                                action={() => {
-                                    this.whoWon();
-                                    this.props.goToShowResult();
-                                }}
-                                text="Show result"
-                            />
-                        }
+
                         <Cards
                             deck={opponentCards}
                             nameClass="opponent__cards"
@@ -224,6 +227,8 @@ class Clash extends Component {
 const mapStateToProps = state => ({
     playerCards: state.data.playerCards,
     opponentCards: state.data.opponentCards,
+    playerName: state.data.id,
+    deck: state.data.deck,
     loading: state.loading,
     error: state.error,
 });

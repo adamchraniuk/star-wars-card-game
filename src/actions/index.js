@@ -1,6 +1,6 @@
 import store from '../store/index';
 
-
+//PLAYER CARDS ACTIONS
 export function fetchPlayerDeck(playerName) {
     return dispatch => {
         return fetch('http://localhost:8000/PlayerDeck/' + playerName)
@@ -33,7 +33,6 @@ export function fetchPlayerCards(playerName) {
         return fetch('http://localhost:8000/PlayerDeck/' + playerName)
             .then(dispatch(fetchDataBegin()))
             .then(response => {
-
                 if (response.ok) {
                     return response.json();
                 } else {
@@ -48,6 +47,7 @@ export function fetchPlayerCards(playerName) {
                     playerAllCards,
                     ...response
                 };
+
                 dispatch(fetchDataSuccess(newData));
             })
             .catch(error => {
@@ -71,13 +71,12 @@ export function fetchOpponentCard(opponentName) {
             .then(response => {
                 const prevData = store.getState().data;
                 const opponentCards = response;
-                if(opponentCards.length > 5){
-                    opponentCards.splice(0,5);
+                if (opponentCards.length > 5) {
+                    opponentCards.splice(0, 5);
                 }
                 const newData = {
                     ...prevData,
                     opponentCards,
-                    ...response
                 };
                 dispatch(fetchDataSuccess(newData));
             })
@@ -92,14 +91,15 @@ export function fetchOpponentCard(opponentName) {
 export function savePlayerCards(playerName, actualPocket) {
     return dispatch => {
         return fetch('http://localhost:8000/PlayerDeck/' + playerName, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 playerAllCards: store.getState().data.playerAllCards,
                 pocket: actualPocket,
-                deck: store.getState().data.deck
+                deck: store.getState().data.deck,
+                tutorialFinished: true,
             }),
         }).then(response => {
             if (response.ok) {
@@ -108,11 +108,60 @@ export function savePlayerCards(playerName, actualPocket) {
                 throw new Error('Error!');
             }
         }).catch(error => {
+            dispatch(fetchDataFailure(error));
+        });
+    }
+}
+
+//CHECK IF TUTORIAL END
+export function fetchPlayerTutorial(playerName) {
+    return dispatch => {
+        return fetch('http://localhost:8000/PlayerDeck/' + playerName)
+            .then(dispatch(fetchDataBegin()))
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error!');
+                }
+            })
+            .then(response => {
+                const tutorialFinished = response.tutorialFinished;
+                const newData = {
+                    tutorialFinished,
+                };
+                dispatch(fetchDataSuccess(newData));
+            })
+            .catch(error => {
                 dispatch(fetchDataFailure(error));
             });
     }
 }
 
+//TUTORIAL END
+export function saveAfterTutorial(playerName) {
+    return dispatch => {
+        return fetch('http://localhost:8000/PlayerDeck/' + playerName, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                tutorialFinished: true,
+            }),
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Error!');
+            }
+        }).then(() => window.location.reload())
+            .catch(error => {
+                dispatch(fetchDataFailure(error));
+            });
+    }
+}
+//Get all cards to shop
 export function fetchData() {
     return dispatch => {
         dispatch(fetchDataBegin());

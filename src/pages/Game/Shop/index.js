@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {
-    APP_STATES,
-    PLAYER_DECK
+    APP_STATES
 } from "../config";
 import Cards from "../../../components/Cards/";
 import Button from '../../../components/Button';
@@ -39,7 +38,6 @@ class Shop extends Component {
             });
             this.state.playerCards.sort((a, b) => b.attack - a.attack);
             // this.state.allCards.sort((a, b) => b.attack - a.attack);   ----> ZROBIC RANDOM KOLEJNOSC
-            PLAYER_DECK.PLAYER_DECK = nextProps.playerCards
         } else if (nextProps.error !== null) {
             this.setState({
                 appState: APP_STATES.ERROR
@@ -108,11 +106,9 @@ class Shop extends Component {
     saveCardsAndGoBack = () => {
         this.props.dispatch(savePlayerCards(this.props.playerName, this.state.pocket));
         this.props.goBackToStart();
-
     };
 
     render() {
-
         const {
             appState,
             allCards,
@@ -140,7 +136,6 @@ class Shop extends Component {
                         <div className="card__boards">
                             <h2 className="color-yellow">
                                 Your card collection</h2>
-
                             <Cards
                                 deck={playerCards}
                                 action={this.removeCard}
@@ -148,7 +143,6 @@ class Shop extends Component {
                                 pocket={pocket}
                                 active={playerActive}
                             />
-
                             <h2 className='color-yellow'>Buy a new card</h2>
                             <Cards
                                 deck={allCards}
@@ -156,7 +150,6 @@ class Shop extends Component {
                                 nameClass="all__cards"
                                 active={otherActive}
                             />
-
                         </div>
                     </Fragment>
                 }

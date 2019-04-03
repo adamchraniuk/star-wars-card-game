@@ -1,16 +1,42 @@
 export const TUTORIAL_START_GAME = {
     START_GAME: 0,
     BEFORE_SELECT_CARDS: 1,
-    SELECT_CARDS_INFO:2,
+    SELECT_CARDS_INFO: 2,
     SELECT_CARDS: 3,
     BEFORE_SELECT_OPPONENT: 4,
     SELECT_OPPONENT: 5,
     BEFORE_SELECT_MODE: 6,
     SELECT_GAME_MODE: 7,
     GAME_MODE_1: 8,
-    GAME_MODE_2: 9,
-    END_GAME: 10,
+    END_GAME_1: 9,
+    BEFORE_GAME_MODE_2: 10,
+    GAME_MODE_2: 11,
+    END_GAME_2: 12,
+    TUTORIAL_END: 13,
 };
+export const GAME_MODE_1_STATE = {
+    START: 1,
+    GAME_VISIBLE:2,
+    CARD_CLICKING:3,
+    PLAY_ROUND_CLICKING: 4,
+};
+
+export const GAME_MODE_TUTORIAL_PART_1 = [
+    {
+        id: '1',
+        name: "BATTLE",
+        url: 'https://cdnb.artstation.com/p/assets/images/images/008/805/423/large/lu-tao-asset.jpg?1515427626',
+    },
+
+];
+export const GAME_MODE_TUTORIAL_PART_2 = [
+    {
+        id: '2',
+        name: "HEROIC BATTLE",
+        url: 'https://i.pinimg.com/564x/4e/ca/2d/4eca2d3fa3b140d35732b1e17dd9642a.jpg',
+    },
+
+];
 
 export const CARDS_EXAMPLE = [
     {
